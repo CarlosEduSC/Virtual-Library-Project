@@ -32,5 +32,27 @@ public class Livro {
 		this(UUID.randomUUID().toString(), dados.nome(), LocalDate.parse(dados.dataPublicacao(), FORMATTER), dados.autor(), dados.copias(), true);
 	}
 
+	public void atualizarLivro(DadosEditarLivro dados) {
+		if (dados.nome() != null) {
+			this.nome = dados.nome();
+		}
 
+		if (dados.dataPublicacao() != null) {
+			this.dataPublicacao = LocalDate.parse(dados.dataPublicacao(), FORMATTER);
+		}
+
+		if (dados.autor() != null) {
+			this.autor = dados.autor();
+		}
+
+		if (dados.copias() >= 0) {
+			if (dados.copias() == 0) {
+				this.status = false;
+			
+			} else {
+				this.status = true;
+			}
+			this.copias = dados.copias();
+		}
+	}
 }

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.example.demo.domain.livro.DadosCadastroLivro;
 import com.example.demo.domain.livro.DadosDetalharLivro;
+import com.example.demo.domain.livro.DadosEditarLivro;
 import com.example.demo.domain.livro.Livro;
 import com.example.demo.domain.livro.LivroRepository;
 
@@ -70,6 +72,17 @@ public class LivroController {
         var livro = repository.findById(id).get();
 
 
+
+        return ResponseEntity.ok(new DadosDetalharLivro(livro));
+    }
+
+    @PutMapping("/editar")
+    public ResponseEntity<DadosDetalharLivro> editarLivro(@RequestBody DadosEditarLivro dados) {
+        var livro = repository.findById(dados.id()).get();
+
+        livro.atualizarLivro(dados);
+
+        repository.save(livro);
 
         return ResponseEntity.ok(new DadosDetalharLivro(livro));
     }
