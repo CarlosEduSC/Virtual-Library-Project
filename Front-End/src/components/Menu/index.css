@@ -1,0 +1,31 @@
+.menu .menu-img {
+    cursor: pointer;
+    background-color: blueviolet;
+}
+
+.menu .menu-options {
+    background-color: brown;
+    display: flex;
+    list-style: none;
+    position: absolute;
+    right: 45px;
+    top: 20px;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.menu .option {
+    background-color: burlywood;
+}
+
+.menu .option-label {
+    background-color: chocolate;
+}
+
+.menu .items{
+    background-color: chartreuse;
+}
+
+.menu .item {
+    background-color: coral;
+}

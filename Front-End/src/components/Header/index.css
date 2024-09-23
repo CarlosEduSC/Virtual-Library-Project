@@ -1,0 +1,13 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 50px;
+    background-color: aquamarine;
+    color: #fff;
+    position: relative;
+}
+
+.header .logo-img {
+    background-color: blue;
+}
