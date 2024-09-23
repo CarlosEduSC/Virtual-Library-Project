@@ -50,4 +50,17 @@ public class LivroController {
 
         return ResponseEntity.ok().body(dadosLivros);
     }
+
+    @GetMapping("/buscar-todos-disponiveis")
+    public ResponseEntity<List<DadosDetalharLivro>> buscarTodosLivrosDisponiveis() {
+        var livros = repository.findAllByStatusTrue();
+
+        List<DadosDetalharLivro> dadosLivros = new ArrayList<DadosDetalharLivro>();
+
+        for (Livro livro : livros) {
+            dadosLivros.add(new DadosDetalharLivro(livro));
+        }
+
+        return ResponseEntity.ok().body(dadosLivros);
+    }
 }
