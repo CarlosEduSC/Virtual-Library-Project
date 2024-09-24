@@ -52,7 +52,7 @@ public class LivroController {
             dadosLivros.add(new DadosDetalharLivro(livro));
         }
 
-        return ResponseEntity.ok().body(dadosLivros);
+        return ResponseEntity.ok(dadosLivros);
     }
 
     @GetMapping("/buscar-todos-disponiveis")
@@ -77,8 +77,9 @@ public class LivroController {
         return ResponseEntity.ok(new DadosDetalharLivro(livro));
     }
 
+    @Transactional
     @PutMapping("/editar")
-    public ResponseEntity<DadosDetalharLivro> editarLivro(@RequestBody DadosEditarLivro dados) {
+    public ResponseEntity<DadosDetalharLivro> editarLivro(@Valid @RequestBody DadosEditarLivro dados) {
         var livro = repository.findById(dados.id()).get();
 
         livro.atualizarLivro(dados);
@@ -89,6 +90,7 @@ public class LivroController {
     }
 
     @SuppressWarnings("rawtypes")
+    @Transactional
     @DeleteMapping("/deletar/{id}")
     public ResponseEntity deletarLivro(@PathVariable String id) {
         repository.deleteById(id);
