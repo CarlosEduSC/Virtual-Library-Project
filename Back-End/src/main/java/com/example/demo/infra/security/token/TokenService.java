@@ -19,7 +19,7 @@ import com.example.demo.domain.usuario.UsuarioRepository;
 @Service
 public class TokenService {
 
-    @Value("JWT_SECRET")
+    @Value("${api.security.token.secret}")
     private String secret;
 
     @Autowired
