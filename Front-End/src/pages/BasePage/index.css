@@ -1,5 +1,5 @@
 .base-page {
-    background-color: #F5F5;
+    background-color: #E3F2F4;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -8,3 +8,9 @@
 .base-page .content {
     flex: 1;
 }
+
+/* Fundo principal: Utilize #E3F2F4 para manter a leveza e o contraste suave.
+Elementos de destaque: Use #7EBDC2 como cor principal para botões e links.
+Textos ou bordas: Aplique #4C9AA0 ou #356E73 para criar contraste.
+Fundos de seções: #B3D9DD ou #A3C7C9 para uma base suave.
+Realces suaves: Utilize #9FD5D8 para destacar detalhes ou elementos de interação. */

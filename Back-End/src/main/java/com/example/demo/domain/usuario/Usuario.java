@@ -2,7 +2,6 @@ package com.example.demo.domain.usuario;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -31,7 +30,11 @@ public class Usuario implements UserDetails{
 	private Boolean status;
 
 	public Usuario(DadosCadastroUsuario dados) {
-		this(UUID.randomUUID().toString(), dados.nome(), dados.email(), codificarSenha(dados.senha()), dados.tipo(), true);
+		this.nome = dados.nome();
+        this.email = dados.email();
+        this.senha = codificarSenha(dados.senha());
+        this.tipo = dados.tipo();
+        this.status = true;
 	}
 
 	public Usuario(DadosDetalharUsuario dados) {

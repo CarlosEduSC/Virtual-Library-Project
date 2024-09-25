@@ -2,12 +2,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 50px;
-    background-color: aquamarine;
-    color: #fff;
+    height: 55px;
+    background-color: #7EBDC2;
     position: relative;
 }
 
 .header .logo-img {
-    background-color: blue;
+    height: 100%;
 }

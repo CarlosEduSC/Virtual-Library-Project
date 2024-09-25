@@ -1,31 +1,51 @@
-.menu .menu-img {
+.menu, .menu .menu-img {
+    height: 100%;
+}
+
+.menu .menu-img, .option, .item {
     cursor: pointer;
-    background-color: blueviolet;
+}
+
+.menu .menu-options, .items-usuario,
+.items-livro {
+    display: block;
+    list-style: none;
+    position: absolute;
+    border-radius: 10px;
+    text-align: center;
 }
 
 .menu .menu-options {
-    background-color: brown;
-    display: flex;
-    list-style: none;
-    position: absolute;
-    right: 45px;
-    top: 20px;
+    right: 55px;
+    top: 30px;
     padding: 10px;
-    border-radius: 15px;
+    background-color: #A3C7C9;
 }
 
-.menu .option {
-    background-color: burlywood;
+.menu .items-usuario,
+.items-livro {
+    right: 200px;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: #356E73;
 }
 
-.menu .option-label {
-    background-color: chocolate;
+.menu .items-usuario {
+    top: 40px;
 }
 
-.menu .items{
-    background-color: chartreuse;
+.menu .items-livro {
+    top: 70px;
 }
 
-.menu .item {
-    background-color: coral;
+.menu .option, .item {
+    padding: 3px;
+}
+
+.menu .option:hover {
+    color: #356E73;
+}
+
+.menu .item:hover {
+    color: #A3C7C9;
 }

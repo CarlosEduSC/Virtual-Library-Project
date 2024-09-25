@@ -17,7 +17,9 @@ const Header = () => {
         <nav className="header">
             <img
                 className='logo-img'
-                alt='Logo' style={{ cursor: location.pathname == "/" ? "auto" : "pointer" }}
+                src='/images/icon.png'
+                alt='Logo' 
+                style={{ cursor: location.pathname == "/" ? "auto" : "pointer" }}
                 onClick={handleLogoClick}
             />
             

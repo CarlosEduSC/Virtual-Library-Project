@@ -2,7 +2,6 @@ package com.example.demo.domain.livro;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -29,7 +28,11 @@ public class Livro {
 	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	public Livro(DadosCadastroLivro dados) {
-		this(UUID.randomUUID().toString(), dados.nome(), LocalDate.parse(dados.dataPublicacao(), FORMATTER), dados.autor(), dados.copias(), true);
+		this.nome = dados.nome();
+		this.dataPublicacao = LocalDate.parse(dados.dataPublicacao(), FORMATTER);
+		this.autor = dados.autor();
+		this.copias = dados.copias();
+		this.status = true;
 	}
 
 	public void atualizarLivro(DadosEditarLivro dados) {
