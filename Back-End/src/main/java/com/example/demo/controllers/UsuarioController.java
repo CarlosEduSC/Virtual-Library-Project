@@ -23,7 +23,6 @@ import com.example.demo.domain.usuario.Usuario;
 import com.example.demo.domain.usuario.UsuarioRepository;
 
 import jakarta.validation.Valid;
-import lombok.var;
 
 @RestController
 @RequestMapping("/usuario")
