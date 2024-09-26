@@ -23,7 +23,7 @@ const Header = () => {
                 onClick={handleLogoClick}
             />
             
-            <Menu />
+            {location.pathname != "/login" && <Menu />}
         </nav>
     )
 }

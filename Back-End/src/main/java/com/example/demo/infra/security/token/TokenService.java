@@ -33,7 +33,7 @@ public class TokenService {
                     .withIssuer("Virtual Library")
                     .withSubject(usuario.getUsername())
                     .withClaim("id", usuario.getId())
-                    .withClaim("tipo", usuario.getTipo().toString())
+                    .withClaim("type", usuario.getTipo().toString())
                     .withExpiresAt(expireDate())
                     .sign(algorithm);
 

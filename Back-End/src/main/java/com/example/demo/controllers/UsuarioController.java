@@ -21,7 +21,9 @@ import com.example.demo.domain.usuario.DadosDetalharUsuario;
 import com.example.demo.domain.usuario.DadosEditarUsuario;
 import com.example.demo.domain.usuario.Usuario;
 import com.example.demo.domain.usuario.UsuarioRepository;
+import com.example.demo.infra.security.token.TokenService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
@@ -30,6 +32,9 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioRepository repository;
+
+    @Autowired
+    TokenService tokenService;
 
     @Transactional
     @PostMapping("/cadastrar")
@@ -95,5 +100,33 @@ public class UsuarioController {
         repository.deleteById(id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @SuppressWarnings("rawtypes")
+    @GetMapping("/verify-user")
+    public ResponseEntity verifyUser(HttpServletRequest request) {
+        String token = "";
+
+        if (request.getHeader("Authorization") != null) {
+            token = request.getHeader("Authorization").replace("Bearer ", "");
+        }
+
+        String userEmail = tokenService.getSubject(token);
+
+        var usuario = repository.findByEmail(userEmail);
+
+        if (usuario != null) {
+            if (!repository.existsById(usuario.getId())) {
+                throw new RuntimeException("Usuário não encontrado");
+            }
+
+            if (!usuario.getStatus()) {
+                throw new RuntimeException("Usuário está com a conta desativada!");
+            }
+
+            return ResponseEntity.ok(true);
+        }
+
+        return ResponseEntity.ok(false);
     }
 }

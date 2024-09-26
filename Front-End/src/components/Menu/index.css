@@ -24,28 +24,39 @@
 
 .menu .items-usuario,
 .items-livro {
-    right: 200px;
+    right: 240px;
     padding: 5px;
     border-radius: 10px;
-    background-color: #356E73;
+    background-color: #9FD5D8;
 }
 
 .menu .items-usuario {
-    top: 40px;
+    top: 30px;
 }
 
 .menu .items-livro {
-    top: 70px;
+    top: 80px;
 }
 
 .menu .option, .item {
-    padding: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    padding: 5px;
 }
 
-.menu .option:hover {
+.menu .option:hover, .item:hover {
     color: #356E73;
+
+    .option-img, .item-img {
+        background-color: #356E73;
+    }
 }
 
-.menu .item:hover {
-    color: #A3C7C9;
+.menu .option-img, .item-img {
+    height: 100%;
+    border-radius: 30px;
+    padding: 2px;
+    margin-right: 3px;
 }

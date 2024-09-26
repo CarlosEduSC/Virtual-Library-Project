@@ -29,7 +29,8 @@ public class SecurityConfig {
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers("/login").permitAll();
-                    req.requestMatchers("/usuario/**").permitAll();
+                    req.requestMatchers("/usuario/verify-user").permitAll();
+                    req.requestMatchers("/usuario/**").hasRole("ADMIN");
                     req.requestMatchers("/livro/cadastrar").hasRole("ADMIN");
                     req.requestMatchers("/livro/editar").hasRole("ADMIN");
                     req.requestMatchers("/livro/deletar/**").hasRole("ADMIN");
