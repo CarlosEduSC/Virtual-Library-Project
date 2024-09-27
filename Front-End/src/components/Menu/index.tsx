@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import './index.css'
 import { useEffect, useRef, useState } from 'react';
-import getUserTypeFromToken from '../../shared/methods/user/GetUserTypeFromToken';
+// import getUserTypeFromToken from '../../shared/methods/user/GetUserTypeFromToken';
 
 const Menu = () => {
     const location = useLocation()
@@ -14,16 +14,16 @@ const Menu = () => {
 
     const [livroIsOpen, setLivroIsOpen] = useState(false)
 
-    const [type, setType] = useState("")
+    // const [type, setType] = useState("")
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
+    // useEffect(() => {
+    //     const token = localStorage.getItem('token');
 
-        if (token) {
-            const usertype = getUserTypeFromToken(token);
-            setType(usertype);
-        }
-    }, []);
+    //     if (token) {
+    //         const usertype = getUserTypeFromToken(token);
+    //         setType(usertype);
+    //     }
+    // }, []);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {

@@ -2,11 +2,11 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import './index.css'
 import { useEffect, useState } from 'react'
 import { IUser } from '../../shared/interfaces/IUser'
-import { login } from '../../shared/methods/user/Login'
 import TextField from '../../components/TextField'
 import Button from '../../components/Botton'
 import LoadingSpinner from '../../components/LoadingSpinner'
 import Alert from '../../components/Alert'
+import { login } from '../../shared/methods/user/Login'
 
 const Login = () => {
   const location = useLocation()
@@ -31,8 +31,6 @@ const Login = () => {
     }
   }, [location.state]);
 
-  console.log("titulo: " + alertTittle + "\nmensagem: " + alertMessage)
-
 
   useEffect(() => {
     if (user) {
@@ -47,8 +45,6 @@ const Login = () => {
         )
 
         if (token) {
-          localStorage.setItem('token', token)
-
           navigate("/")
 
         } else {

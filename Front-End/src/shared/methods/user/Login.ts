@@ -3,7 +3,9 @@ import api from "../api";
 
 export const login = async (
     user: IUser,
-    onError: (tittle: string, message: string) => void) => {
+    onError: (tittle: string, message: string) => void): Promise<boolean> => {
+
+    const tittle = "Erro ao tentar fazer login!"
 
     try {
         const response = await api.post("/login", user);
@@ -13,15 +15,17 @@ export const login = async (
 
             localStorage.setItem('token', token)
 
-
-
-            return token
+            return true
 
         } else {
-            onError("", "Usuario ou senha invalidos!")
+            onError(tittle, response.data)
+
+            return false
         }
 
     } catch (error) {
-        onError("Erro ao tentar fazer login!", String(error))
+        onError(tittle, String(error))
+
+        return false
     }
 }

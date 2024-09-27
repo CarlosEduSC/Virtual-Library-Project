@@ -122,11 +122,11 @@ public class UsuarioController {
         var usuario = repository.findByEmail(userEmail);
 
         if (usuario == null) {
-            return ResponseEntity.status(404).body("Usuário não encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
         }
 
         if (!usuario.getStatus()) {
-            return ResponseEntity.status(403).body("Usuário está com a conta desativada!");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Usuário está com a conta desativada!");
         }
 
         return ResponseEntity.noContent().build();

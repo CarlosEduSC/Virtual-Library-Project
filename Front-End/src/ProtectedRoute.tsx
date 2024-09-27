@@ -30,7 +30,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
     checkAuthentication();
   }, []);
 
-
   if (isAuthenticated === null) {
     return (
       <div
