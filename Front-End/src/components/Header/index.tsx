@@ -19,7 +19,7 @@ const Header = () => {
                 className='logo-img'
                 src='/images/icon.png'
                 alt='Logo' 
-                style={{ cursor: location.pathname == "/" ? "auto" : "pointer" }}
+                style={{ cursor: location.pathname == "/" || "/login" ? "auto" : "pointer" }}
                 onClick={handleLogoClick}
             />
             

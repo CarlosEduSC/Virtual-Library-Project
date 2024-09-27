@@ -11,7 +11,7 @@ export const findUserById = async (
         if (response.status != 200) {
             onError("Erro ao buscar usuario: " + response.statusText)
         }
-    
+
     } catch (error) {
         onError("Erro ao tentar buscar usuario: " + error)
     }

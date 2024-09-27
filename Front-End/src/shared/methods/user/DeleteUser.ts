@@ -10,7 +10,7 @@ export const deletUser = async (
 
         if (response.status == 204) {
             onSucess("Usuario deletado com sucesso!")
-        
+
         } else {
             onError("Erro ao deletar o usuario: " + response.statusText)
         }

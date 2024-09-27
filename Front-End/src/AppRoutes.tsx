@@ -24,7 +24,7 @@ const AppRoutes = () => {
                 <Route element={<BasePage />}>
                     <Route path="/login" element={<Login />} />
 
-                    <Route path="/" element={<Home />} />
+                    <Route path="/" element={<ProtectedRoute element={<Home />} />} />
                 </Route>
             </Routes>
         </BrowserRouter>

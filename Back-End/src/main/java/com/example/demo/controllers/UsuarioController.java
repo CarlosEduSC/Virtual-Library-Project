@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,7 +39,8 @@ public class UsuarioController {
 
     @Transactional
     @PostMapping("/cadastrar")
-    public ResponseEntity<DadosDetalharUsuario> cadastrarUsuario(@Valid @RequestBody DadosCadastroUsuario dados, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<DadosDetalharUsuario> cadastrarUsuario(@Valid @RequestBody DadosCadastroUsuario dados,
+            UriComponentsBuilder uriBuilder) {
         var usuario = new Usuario(dados);
 
         repository.save(usuario);
@@ -113,20 +115,20 @@ public class UsuarioController {
 
         String userEmail = tokenService.getSubject(token);
 
-        var usuario = repository.findByEmail(userEmail);
-
-        if (usuario != null) {
-            if (!repository.existsById(usuario.getId())) {
-                throw new RuntimeException("Usuário não encontrado");
-            }
-
-            if (!usuario.getStatus()) {
-                throw new RuntimeException("Usuário está com a conta desativada!");
-            }
-
-            return ResponseEntity.ok(true);
+        if (userEmail == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido ou vazio!");
         }
 
-        return ResponseEntity.ok(false);
+        var usuario = repository.findByEmail(userEmail);
+
+        if (usuario == null) {
+            return ResponseEntity.status(404).body("Usuário não encontrado");
+        }
+
+        if (!usuario.getStatus()) {
+            return ResponseEntity.status(403).body("Usuário está com a conta desativada!");
+        }
+
+        return ResponseEntity.noContent().build();
     }
 }
