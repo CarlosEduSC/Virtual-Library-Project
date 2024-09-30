@@ -3,7 +3,7 @@ import api from "../api";
 
 export const findAllUsers = async (onError: (message: string) => void): Promise<IUser[]> => {
 
-    const reponse = await api.get<IUser[]>("/usuario/buscar-todos");
+    const reponse = await api.get<IUser[]>("/user/find-all");
 
     try {
         if (reponse.status != 200) {

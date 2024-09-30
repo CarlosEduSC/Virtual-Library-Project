@@ -1,8 +1,8 @@
 export interface IUser {
   id: string
-  nome: string
+  name: string
   email: string
-  senha: string
-  tipo: string
-  status: boolean
+  password: string
+  type: string
+  active: boolean
 }

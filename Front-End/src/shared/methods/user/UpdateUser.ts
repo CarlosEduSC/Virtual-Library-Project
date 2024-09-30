@@ -7,7 +7,7 @@ export const updateUser = async (
     onError: (message: string) => void) => {
 
     try {
-        const response = await api.post<IUser>("/usuario/editar", user)
+        const response = await api.post<IUser>("/user/update", user)
 
         if (response.status == 200) {
             onSucess("Usuario atualizado com sucesso!")

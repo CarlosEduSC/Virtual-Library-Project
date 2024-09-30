@@ -6,7 +6,7 @@ export const deletUser = async (
     onError: (message: string) => void) => {
 
     try {
-        const response = await api.delete("/usuario/deletar/" + id)
+        const response = await api.delete("/user/delete/" + id)
 
         if (response.status == 204) {
             onSucess("Usuario deletado com sucesso!")

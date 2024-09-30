@@ -5,7 +5,7 @@ export const verifyUser = async (onError: (tittle: string, message: string) => v
   const tittle = "Erro ao verificar autenticação!"
 
   try {
-    const response = await api.get<boolean>("/usuario/verify-user")
+    const response = await api.get<boolean>("/user/verify-user")
 
     if (response.status == 204) {
       return true

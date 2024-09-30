@@ -7,7 +7,7 @@ export const createUser = async (
     onError: (message: string) => void) => {
 
     try {
-        const response = await api.post<IUser>("/usuario/cadastrar", user)
+        const response = await api.post<IUser>("/user/create", user)
 
         if (response.status == 201) {
             onSucess("Usuario cadastrado com sucesso!")

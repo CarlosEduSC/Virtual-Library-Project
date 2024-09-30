@@ -11,7 +11,7 @@ export const login = async (
         const response = await api.post("/login", user);
 
         if (response.status == 200) {
-            const token = response.data.token
+            const token = response.data
 
             localStorage.setItem('token', token)
 
@@ -23,8 +23,8 @@ export const login = async (
             return false
         }
 
-    } catch (error) {
-        onError(tittle, String(error))
+    } catch (error: any) {
+        onError(tittle, error.response.data)
 
         return false
     }

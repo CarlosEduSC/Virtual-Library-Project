@@ -5,7 +5,7 @@ export const findUserById = async (
     id: string,
     onError: (message: string) => void): Promise<IUser> => {
 
-    const response = await api.get<IUser>("/usuario/buscar/" + id)
+    const response = await api.get<IUser>("/user/find/" + id)
 
     try {
         if (response.status != 200) {

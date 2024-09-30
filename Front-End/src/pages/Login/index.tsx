@@ -14,7 +14,7 @@ const Login = () => {
 
   const [user, setUser] = useState<IUser>()
   const [email, setEmail] = useState("")
-  const [password, setSenha] = useState("")
+  const [password, setPassword] = useState("")
 
   const [isLoading, setIsLoading] = useState(false)
   const [submit, setSubmit] = useState(false)
@@ -66,11 +66,11 @@ const Login = () => {
 
     const userData: IUser = {
       id: "",
-      nome: "",
+      name: "",
       email,
-      senha: password,
-      tipo: "",
-      status: true
+      password,
+      type: "",
+      active: true
     }
 
     setUser(userData)
@@ -84,7 +84,7 @@ const Login = () => {
 
         <TextField label='Email' value={email} placeHolder='Digite seu email' onAlterado={value => setEmail(value)} />
 
-        <TextField label='Senha' value={password} type='password' placeHolder='Digite sua senha' onAlterado={value => setSenha(value)} />
+        <TextField label='Senha' value={password} type='password' placeHolder='Digite sua senha' onAlterado={value => setPassword(value)} />
 
         <Button>{isLoading ?
           <div className='loading'>

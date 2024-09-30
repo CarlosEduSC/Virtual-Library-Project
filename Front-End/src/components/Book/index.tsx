@@ -2,8 +2,8 @@ import './index.css'
 
 const Book = () => {
   return (
-    <div>
-
+    <div className='book'>
+      <img></img>
     </div>
   )
 }
