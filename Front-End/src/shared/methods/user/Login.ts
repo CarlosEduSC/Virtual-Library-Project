@@ -11,7 +11,7 @@ export const login = async (
         const response = await api.post("/login", user);
 
         if (response.status == 200) {
-            const token = response.data.tokenJWT
+            const token = response.data.token
 
             localStorage.setItem('token', token)
 

@@ -122,7 +122,7 @@ public class UsuarioController {
         var usuario = repository.findByEmail(userEmail);
 
         if (usuario == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("Usuário não encontrado");
         }
 
         if (!usuario.getStatus()) {

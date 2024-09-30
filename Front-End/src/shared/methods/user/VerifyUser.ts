@@ -16,7 +16,7 @@ export const verifyUser = async (onError: (tittle: string, message: string) => v
     }
 
   } catch (error: any) {
-    onError("Erro ao verificar autenticação!", String(error));
+    onError(tittle, error.response.data);
 
     return false
   }

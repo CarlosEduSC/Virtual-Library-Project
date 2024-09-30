@@ -58,14 +58,18 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
     );
   }
 
-  return (isAuthenticated ? element :
-    <>
-      <Navigate
-        to="/login"
-        state={{ from: location, alertTittle: alertTittle, alertMessage: alertMessage }}
-        replace
-      />
-    </>
+  return (isAuthenticated ? element : location.pathname != "/" ?
+    <Navigate
+      to="/login"
+      state={{ from: location, alertTittle: alertTittle, alertMessage: alertMessage }}
+      replace
+    /> :
+
+    <Navigate
+      to="/login"
+      state={{ from: location }}
+      replace
+    />
   )
 }
 
