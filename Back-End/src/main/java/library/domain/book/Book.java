@@ -19,7 +19,7 @@ import lombok.Setter;
 public class Book {
 	@Id
     private String id;
-	private String tittle;
+	private String title;
 	private LocalDate publishingDate;
 	private String author;
 	private String cover;
@@ -30,7 +30,7 @@ public class Book {
 	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	public Book(CreateBookData data) {
-		this.tittle = data.tittle();
+		this.title = data.title();
 		this.publishingDate = LocalDate.parse(data.publishingDate(), FORMATTER);
 		this.author = data.author();
 		this.copysTotal = data.copys();
@@ -43,8 +43,8 @@ public class Book {
 	}
 
 	public void updateBook(UpdateBookData data) {
-		if (data.tittle() != null) {
-			this.tittle = data.tittle();
+		if (data.title() != null) {
+			this.title = data.title();
 		}
 
 		if (data.publishingDate() != null) {

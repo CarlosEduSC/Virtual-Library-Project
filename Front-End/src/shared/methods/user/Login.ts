@@ -3,12 +3,10 @@ import api from "../api";
 
 export const login = async (
     user: IUser,
-    onError: (tittle: string, message: string) => void): Promise<boolean> => {
-
-    const tittle = "Erro ao tentar fazer login!"
+    onError: (title: string, message: string) => void): Promise<boolean> => {
 
     try {
-        const response = await api.post("/login", user);
+        const response = await api.post("/login", user)
 
         if (response.status == 200) {
             const token = response.data
@@ -18,13 +16,18 @@ export const login = async (
             return true
 
         } else {
-            onError(tittle, response.data)
+            onError(response.data.title, response.data.message)
 
             return false
         }
 
     } catch (error: any) {
-        onError(tittle, error.response.data)
+        if (error.response && error.response.data) {
+            onError(error.reponse.data.title, error.response.data.message)
+
+        } else {
+            onError(error.title, error.message)
+        }
 
         return false
     }

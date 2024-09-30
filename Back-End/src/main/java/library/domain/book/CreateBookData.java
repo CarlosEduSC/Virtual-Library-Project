@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Positive;
 
 public record CreateBookData(
     @NotBlank(message = "O nome não pode ser nulo ou estar em branco!")
-    String tittle,
+    String title,
 
     @NotBlank(message = "A data de criação não pode ser nula ou estar em branco!")
     @Pattern(regexp = "\\d{2}/\\d{2}/\\d{4}", message = "A data deve estar no formato dd/MM/yyyy")

@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import library.domain.user.AutenticationData;
 import library.domain.user.User;
 import library.domain.user.UserRepository;
+import library.infra.Error.ErrorData;
 import library.infra.security.TokenService;
 
 @RestController
@@ -34,12 +35,14 @@ public class AutenticationController {
     public ResponseEntity LogIn(@Valid @RequestBody AutenticationData data) {
         var user = repository.findByEmail(data.email());
 
+        String title = "Erro ao tentar fazer login!";
+
         if (user == null) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("Usuário não encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorData(title,"Usuário não encontrado."));
         }
 
         if (!user.getActive()) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Usuário está com a conta desativada!");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorData(title,"Usuário está com a conta desativada."));
         }
 
         var autenticationToken = new UsernamePasswordAuthenticationToken(data.email(), data.password(), user.getAuthorities());

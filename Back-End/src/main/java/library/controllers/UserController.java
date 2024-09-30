@@ -24,6 +24,7 @@ import library.domain.user.UpdateUserData;
 import library.domain.user.ShowUserData;
 import library.domain.user.User;
 import library.domain.user.UserRepository;
+import library.infra.Error.ErrorData;
 import library.infra.security.TokenService;
 
 @RestController
@@ -120,6 +121,8 @@ public class UserController {
     public ResponseEntity verifyUser(HttpServletRequest request) {
         String token = "";
 
+        String title = "Erro ao verificar autenticação!";
+
         if (request.getHeader("Authorization") != null) {
             token = request.getHeader("Authorization").replace("Bearer ", "");
         }
@@ -127,17 +130,17 @@ public class UserController {
         String userEmail = tokenService.getSubject(token);
 
         if (userEmail == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido ou vazio!");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorData(title, "Token inválido ou vazio."));
         }
 
         var user = repository.findByEmail(userEmail);
 
         if (user == null) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("Usuário não encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorData(title, "Usuário não encontrado."));
         }
 
         if (!user.getActive()) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Usuário está com a conta desativada!");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorData(title, "Usuário está com a conta desativada."));
         }
 
         return ResponseEntity.noContent().build();

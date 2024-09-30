@@ -8,7 +8,7 @@ public record UpdateBookData(
     @NotNull(message = "O id não pode ser nulo!")
     String id,
 
-    String tittle,
+    String title,
 
     @Pattern(regexp = "\\d{2}/\\d{2}/\\d{4}", message = "A data deve estar no formato dd/MM/yyyy")
     String publishingDate,

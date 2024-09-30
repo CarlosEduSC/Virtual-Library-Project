@@ -9,6 +9,8 @@ import Alert from '../../components/Alert'
 import { login } from '../../shared/methods/user/Login'
 
 const Login = () => {
+  localStorage.setItem('token', "")
+
   const location = useLocation()
   const navigate = useNavigate()
 

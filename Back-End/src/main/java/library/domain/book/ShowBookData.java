@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public record ShowBookData(
         String id,
-        String tittle,
+        String title,
         LocalDate publishingDate,
         String author,
         String cover,
@@ -16,7 +16,7 @@ public record ShowBookData(
     public ShowBookData(Book book) {
         this(
             book.getId(),
-            book.getTittle(),
+            book.getTitle(),
             book.getPublishingDate(),
             book.getAuthor(),
             book.getCover(),

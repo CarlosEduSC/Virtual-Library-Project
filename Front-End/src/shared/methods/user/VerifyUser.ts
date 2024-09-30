@@ -1,22 +1,25 @@
 import api from "../api"
 
-export const verifyUser = async (onError: (tittle: string, message: string) => void): Promise<boolean> => {
-
-  const tittle = "Erro ao verificar autenticação!"
+export const verifyUser = async (onError: (title: string, message: string) => void): Promise<boolean> => {
 
   try {
-    const response = await api.get<boolean>("/user/verify-user")
+    const response = await api.get("/user/verify-user")
 
     if (response.status == 204) {
       return true
 
     } else {
-      onError(tittle, String(response.status + ": " + response.data));
+      onError(response.data.title, response.data.message)
       return false
     }
 
   } catch (error: any) {
-    onError(tittle, error.response.data);
+    if (error.response && error.response.data) {
+      onError(error.reponse.data.title, error.response.data.message)
+
+    } else {
+      onError(error.title, error.message)
+    }
 
     return false
   }
