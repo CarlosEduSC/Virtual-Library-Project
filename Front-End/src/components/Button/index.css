@@ -1,4 +1,4 @@
-.botao {
+.button {
     background-color: #356E73;
     border: none;
     border-radius: 10px;
@@ -16,6 +16,19 @@
     min-width: 150px;
 }
 
-.botao:hover {
+.button:hover {
     color: #9FD5D8;
+}
+
+.button .loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: #E3F2F4;
+    cursor: auto;
+}
+
+.button .loading:hover {
+    color: #E3F2F4;
 }

@@ -7,9 +7,10 @@ interface TextFieldProps {
   required?: boolean
   placeHolder?: string
   type?: "date" | "text" | "email" | "password" | "number" | "color"
+  minLength?: number
 }
 
-const TextField = ({ onAlterado, label, value, required = true, placeHolder = "", type = "text" }: TextFieldProps) => {
+const TextField = ({ onAlterado, label, value, required = true, placeHolder = "", type = "text", minLength = 8}: TextFieldProps) => {
   const onDigitado = (event: React.ChangeEvent<HTMLInputElement>) => {
     onAlterado(event.target.value)
   }
@@ -24,6 +25,7 @@ const TextField = ({ onAlterado, label, value, required = true, placeHolder = ""
         required={required}
         placeholder={placeHolder}
         type={type}
+        minLength={minLength}
       />
     </div>
   )

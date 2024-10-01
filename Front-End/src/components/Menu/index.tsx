@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import './index.css'
 import { useEffect, useRef, useState } from 'react';
+import getUserTypeFromToken from '../../shared/methods/user/GetUserTypeFromToken';
 // import getUserTypeFromToken from '../../shared/methods/user/GetUserTypeFromToken';
 
 const Menu = () => {
@@ -14,39 +15,44 @@ const Menu = () => {
 
     const [livroIsOpen, setLivroIsOpen] = useState(false)
 
-    // const [type, setType] = useState("")
+    const [type, setType] = useState("")
 
-    // useEffect(() => {
-    //     const token = localStorage.getItem('token');
+    useEffect(() => {
+        const token = localStorage.getItem('token');
 
-    //     if (token) {
-    //         const usertype = getUserTypeFromToken(token);
-    //         setType(usertype);
-    //     }
-    // }, []);
+        if (token) {
+            const usertype = getUserTypeFromToken(token);
+            setType(usertype);
+        }
+    }, []);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
-          if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-            setMenuIsOpen(false)
-            setUsuarioIsOpen(false)
-            setLivroIsOpen(false)
-          }
+            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+                setMenuIsOpen(false)
+                setUsuarioIsOpen(false)
+                setLivroIsOpen(false)
+            }
         }
-    
+
         if (menuIsOpen) {
-          document.addEventListener("click", handleClickOutside)
+            document.addEventListener("click", handleClickOutside)
         }
-    
+
         return () => {
-          document.removeEventListener("click", handleClickOutside)
+            document.removeEventListener("click", handleClickOutside)
         }
-      }, [menuIsOpen])
+    }, [menuIsOpen])
 
     const handleMenuClick = () => {
-        setMenuIsOpen(!menuIsOpen)
-        setUsuarioIsOpen(false)
-        setLivroIsOpen(false)
+        if (type == "ADMIN") {
+            setMenuIsOpen(!menuIsOpen)
+            setUsuarioIsOpen(false)
+            setLivroIsOpen(false)
+
+        } else {
+            setLivroIsOpen(!livroIsOpen)
+        }
     }
 
     const handleUsuarioClick = () => {
@@ -68,43 +74,63 @@ const Menu = () => {
                 onClick={handleMenuClick}
             />
 
-            <ul className="menu-options" style={{ visibility: menuIsOpen ? "visible" : "hidden" }}>
-                <li className="option" onClick={handleUsuarioClick}>
-                    <img className='option-img' alt='Opções Usuario' src='/images/user.png' />
-                    Opções usuario
-                </li>
-                <li className="option" onClick={handleLivroClick}>
-                    <img className='option-img' alt='Opções Livro' src='/images/book.png' />
-                    Opções Livro
-                </li>
-            </ul>
+            {type == "ADMIN" &&
+                <ul className="menu-options" style={{ visibility: menuIsOpen ? "visible" : "hidden" }}>
+
+                    <li className="option" onClick={handleUsuarioClick}>
+                        <img className='option-img' alt='Opções Usuario' src='/images/user.png' />
+
+                        Opções usuario
+                    </li>
+
+
+                    <li className="option" onClick={handleLivroClick}>
+                        <img className='option-img' alt='Opções Livro' src='/images/book.png' />
+
+                        Opções Livro
+                    </li>
+                </ul>
+            }
 
             <ul className="items-usuario" style={{ visibility: usuarioIsOpen ? "visible" : "hidden" }}>
-                <li className="item">
-                    <img className='option-img' alt='Cadastrar Usuario' src='/images/add-user.png' />
-                    Cadastrar usuario
-                </li>
-                <li className="item">
-                    <img className='option-img' alt='Atualizar dados de um usuario' src='/images/edit-user.png' />
-                    Atualizar dados de um usuario
-                </li>
+
+                {location.pathname != "/createUser" &&
+                    <li className="item" onClick={() => navigate("/createUser")}>
+                        <img className='option-img' alt='Cadastrar Usuario' src='/images/add-user.png' />
+
+                        Cadastrar usuario
+                    </li>
+                }
+
                 <li className="item">
                     <img className='option-img' alt='Lista de Usuarios' src='/images/list.png' />
+
                     Lista de usuarios
                 </li>
             </ul>
 
-            <ul className="items-livro" style={{ visibility: livroIsOpen ? "visible" : "hidden" }}>
-                <li className='item'>
-                    <img className='option-img' alt='Cadastrar Livro' src='/images/add.png' />
-                    Cadastrar livro
-                </li>
-                <li className='item'>
-                    <img className='option-img' alt='Atualizar dados de um livro' src='/images/edit.png' />
-                    Atualizar dados de um livro
-                </li>
-                <li className='item'>
+            <ul className={type == "ADMIN" ? "items-livro" : "menu-options"} style={{ visibility: livroIsOpen ? "visible" : "hidden" }}>
+
+                {type != "LEITOR" ?
+                    <>
+                        <li className='item'>
+                            <img className='option-img' alt='Cadastrar Livro' src='/images/add.png' />
+
+                            Cadastrar livro
+                        </li>
+                    </>
+
+                    :
+                    <li className="option">
+                        <img className='option-img' alt='Perfil' src='/images/user.png' />
+
+                        Perfil
+                    </li>
+                }
+
+                <li className={type == "ADMIN" ? "item" : "option"}>
                     <img className='option-img' alt='Lista de livros' src='/images/list.png' />
+
                     Lista de livros
                 </li>
             </ul>

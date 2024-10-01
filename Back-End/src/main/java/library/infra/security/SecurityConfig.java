@@ -30,7 +30,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers("/login").permitAll();
                     req.requestMatchers("/user/verify-user").permitAll();
-                    req.requestMatchers("/user/**").hasRole("ADMIN");
+                    req.requestMatchers("/user/**").permitAll();
                     req.requestMatchers("/book/create").hasRole("ADMIN");
                     req.requestMatchers("/book/edit").hasRole("ADMIN");
                     req.requestMatchers("/book/delete/**").hasRole("ADMIN");

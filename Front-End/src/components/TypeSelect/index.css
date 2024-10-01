@@ -1,0 +1,67 @@
+.type-select {
+    margin-top: 24px;
+    align-self: baseline;
+    position: relative;
+}
+
+.type-select label {
+    display: block;
+    margin-bottom: 8px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 22px;
+}
+
+.type-select .selected {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #B3D9DD;
+    box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.06);
+    height: 60px;
+    border: none;
+    box-sizing: border-box;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 20px;
+    cursor: pointer;
+    padding: 10px;
+    min-width: 205px;
+}
+
+.type-select .selected:hover {
+    color: #356E73;
+}
+
+.type-select img {
+    height: 50%;
+    margin-left: 5px;
+    margin-top: 5px;
+}
+
+.type-select ul {
+    display: block;
+    position: absolute;
+    top: 85%;
+    left: 50%;
+    transform: translateX(-50%);
+    list-style:none;
+    background-color: #B3D9DD;
+    box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.06);
+    border: none;
+    box-sizing: border-box;
+    cursor: pointer;
+    padding-left: 0%;
+}
+
+.type-select li {
+    text-align: center;
+    font-size: 18px;
+    padding: 5px;
+}
+
+.type-select li:hover {
+    color: #356E73;
+}

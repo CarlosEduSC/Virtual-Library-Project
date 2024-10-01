@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,17 +38,32 @@ public class UserController {
     @Autowired
     TokenService tokenService;
 
+    @SuppressWarnings("rawtypes")
     @Transactional
     @PostMapping("/create")
-    public ResponseEntity<ShowUserData> createUser(@Valid @RequestBody CreateUserData data,
+    public ResponseEntity createUser(@Valid @RequestBody CreateUserData data,
             UriComponentsBuilder uriBuilder) {
-        var user = new User(data);
+        String title = "Erro ao tentar cadastrar o usuario!";
 
-        repository.save(user);
+        if (repository.existsByEmail(data.email())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorData(title, "Email já está em uso."));
+        }
 
-        var uri = uriBuilder.path("/user/create/{id}").buildAndExpand(user.getId()).toUri();
+        try {
+            var user = new User(data);
 
-        return ResponseEntity.created(uri).body(new ShowUserData(user));
+            repository.save(user);
+
+            var uri = uriBuilder.path("/user/create/{id}").buildAndExpand(user.getId()).toUri();
+
+            return ResponseEntity.created(uri).body(new ShowUserData(user));
+        
+        } catch (DataAccessException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorData(title, "Erro ao salvar o usuário no banco de dados."));
+        
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorData(title, "Erro inesperado ao criar o usuário."));
+        }
     }
 
     @GetMapping("/find-all")
@@ -112,7 +128,7 @@ public class UserController {
         var user = repository.findById(id).get();
 
         user.setActive(true);
-        
+
         return ResponseEntity.noContent().build();
     }
 
@@ -125,12 +141,16 @@ public class UserController {
 
         if (request.getHeader("Authorization") != null) {
             token = request.getHeader("Authorization").replace("Bearer ", "");
+        
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorData(title, "Token de autorização ausente."));
         }
 
         String userEmail = tokenService.getSubject(token);
 
         if (userEmail == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorData(title, "Token inválido ou vazio."));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ErrorData(title, "Token inválido ou vazio."));
         }
 
         var user = repository.findByEmail(userEmail);
@@ -140,7 +160,8 @@ public class UserController {
         }
 
         if (!user.getActive()) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorData(title, "Usuário está com a conta desativada."));
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(new ErrorData(title, "Usuário está com a conta desativada."));
         }
 
         return ResponseEntity.noContent().build();

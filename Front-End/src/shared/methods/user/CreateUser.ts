@@ -3,20 +3,28 @@ import api from "../api";
 
 export const createUser = async (
     user: IUser,
-    onSucess: (message: string) => void,
-    onError: (message: string) => void) => {
+    onError: (title: string, message: string) => void): Promise<boolean> => {
 
     try {
-        const response = await api.post<IUser>("/user/create", user)
+        const response = await api.post("/user/create", user)
 
         if (response.status == 201) {
-            onSucess("Usuario cadastrado com sucesso!")
+            return true
 
         } else {
-            onError("Erro ao cadastrar o usuario: " + response.statusText)
+            onError(response.data.title, response.data.message)
+
+            return false
         }
 
-    } catch (error) {
-        onError("Erro ao tentar cadastrar o usuario: " + error)
+    } catch (error: any) {
+        if (error.response && error.response.data) {
+            onError(error.reponse.data.title, error.response.data.message)
+
+        } else {
+            onError(error.title, error.message)
+        }
+
+        return false
     }
 }

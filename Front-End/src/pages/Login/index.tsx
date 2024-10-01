@@ -1,12 +1,12 @@
 import { useLocation, useNavigate } from 'react-router-dom'
-import './index.css'
 import { useEffect, useState } from 'react'
 import { IUser } from '../../shared/interfaces/IUser'
 import TextField from '../../components/TextField'
-import Button from '../../components/Botton'
-import LoadingSpinner from '../../components/LoadingSpinner'
+import Button from '../../components/Button'
 import Alert from '../../components/Alert'
 import { login } from '../../shared/methods/user/Login'
+import FormTitle from '../../components/FormTitle'
+import BaseForm from '../../components/BaseForm'
 
 const Login = () => {
   localStorage.setItem('token', "")
@@ -80,24 +80,16 @@ const Login = () => {
   }
 
   return (
-    <div className='login'>
-      <form className='form' onSubmit={handleSubmit}>
-        <h2>Faça login na sua conta!</h2>
+    <BaseForm onSubmit={handleSubmit}>
+      <FormTitle>Faça login na sua conta!</FormTitle>
+      <TextField label='Email' value={email} placeHolder='Digite seu email' onAlterado={value => setEmail(value)} />
 
-        <TextField label='Email' value={email} placeHolder='Digite seu email' onAlterado={value => setEmail(value)} />
+      <TextField label='Senha' value={password} type='password' placeHolder='Digite sua senha' onAlterado={value => setPassword(value)} />
 
-        <TextField label='Senha' value={password} type='password' placeHolder='Digite sua senha' onAlterado={value => setPassword(value)} />
+      <Button isLoading={isLoading}>Entrar</Button>
 
-        <Button>{isLoading ?
-          <div className='loading'>
-            Carregando
-            <LoadingSpinner />
-          </div> : "Entrar"}
-        </Button>
-
-        {isAlertOpen && <Alert tittle={alertTittle} message={alertMessage} onClose={() => setIsAlertOpen(false)} />}
-      </form>
-    </div>
+      {isAlertOpen && <Alert tittle={alertTittle} message={alertMessage} onClose={() => setIsAlertOpen(false)} />}
+    </BaseForm>
   )
 }
 

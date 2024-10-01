@@ -1,0 +1,14 @@
+.base-form {
+    display: flex;
+    justify-content: center;
+}
+
+.base-form  form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #7EBDC2;
+    border-radius: 20px;
+    padding: 36px 64px;
+    box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.08);
+}
