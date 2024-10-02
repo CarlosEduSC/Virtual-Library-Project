@@ -1,3 +1,22 @@
+/* CORES
+    Alert:
+        Fundo: 
+            #F7C24A (Amarelo vibrante) - Chama a atenção para o erro ou mensagem de alerta.
+
+        Título do Alerta: 
+            #356E73 (Verde escuro) - Contraste forte com o fundo do alerta.
+
+        Texto do Alerta: 
+            #7EBDC2 (Verde claro) - Suave, mas ainda legível.
+
+        Botão de Fechar:
+            Cor Normal: 
+                #356E73 (Verde escuro) - Para manter consistência com o título.
+
+            Hover do Botão de Fechar: 
+                #FF0000 (Vermelho) - Um destaque bem claro, típico para ações de fechar ou cancelar.
+*/
+
 .alert {
     position: fixed;
     bottom: 70px;
@@ -8,7 +27,7 @@
     z-index: 1000;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     animation: slideDown 0.5s ease;
-    background-color: #356E73;
+    background-color: #F7C24A;
     max-width: 600px;
     min-width: 250px;
     text-align: center;
@@ -32,7 +51,7 @@
 }
 
 .alert .alert-tittle {
-    color: #9FD5D8;
+    color: #356E73;
     font-size: 23px;
     word-break: break-all;
     margin: 0px;
@@ -47,11 +66,11 @@
 }
 
 .alert-img:hover {
-    background-color: #9FD5D8;
+    background-color: #FF0000;
 }
 
 .alert .alert-message {
-    color: #9FD5D8;
+    color: #7EBDC2;
     font-size: 17px;
     word-break: break-all;
 }

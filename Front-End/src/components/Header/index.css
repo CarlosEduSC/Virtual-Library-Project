@@ -5,6 +5,7 @@
     height: 55px;
     background-color: #7EBDC2;
     position: relative;
+    padding: 5px;
 }
 
 .header .logo-img {

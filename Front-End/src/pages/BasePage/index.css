@@ -11,8 +11,31 @@
     padding: 50px;
 }
 
-/* Fundo principal: Utilize #E3F2F4 para manter a leveza e o contraste suave.
-Elementos de destaque: Use #7EBDC2 como cor principal para botões e links.
-Textos ou bordas: Aplique #4C9AA0 ou #356E73 para criar contraste.
-Fundos de seções: #B3D9DD ou #A3C7C9 para uma base suave.
-Realces suaves: Utilize #9FD5D8 para destacar detalhes ou elementos de interação. */
+/*
+Fundo Principal: fundo #E3F2F4.
+
+Header/Footer: fundo #7EBDC2.
+
+Menu:
+    Primeira Aba: fundo #B3D9DD
+
+    Segunda Aba: fundo #A3C7C9
+
+    texto hover das duas abas #356E73
+
+Formulário:
+
+    Fundo: #B3D9DD, um azul claro neutro que não rouba a atenção do usuário.
+    Campos de Texto: O fundo dos campos é branco #FFFFFF, os placeholders são em azul claro #9FD5D8, e o texto digitado tem a mesma cor do placeholder, mantendo a harmonia visual.
+    Campo de Seleção: O fundo segue a mesma cor dos campos #FFFFFF, e o texto é preto #000000. Ao passar o mouse, o texto muda para o tom do placeholder #9FD5D8.
+
+Botão (#06D6A0): Um verde vibrante que se destaca na página. O texto no botão é branco (#FFFFFF), e ao passar o mouse, o texto fica um pouco mais escuro, em #04B386.
+
+Alerta de Erro:
+
+    O fundo do alerta é um amarelo quente #FFD166 para chamar atenção.
+    O título é preto (#000000), e o texto tem um tom mais claro de cinza escuro (#4C4C4C), criando contraste.
+    O botão de fechar (X) tem um fundo transparente que pega a cor do alerta. Ao passar o mouse, o fundo muda para um vermelho claro (#FF6B6B), para sinalizar a ação de fechamento.
+*/
+
+/* #7EBDC2 #356E73 #90E0EF #9FD5D8 #06D6A0 #E3F2F4 #4C9AA0 #356E73 #B3D9DD #A3C7C9*/

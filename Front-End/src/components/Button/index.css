@@ -1,12 +1,24 @@
+/* CORES
+    Button:
+        Fundo: 
+            #A565E0 (Roxo vibrante) - Um contraste marcante com o fundo do formulário, destacando o botão de forma significativa.
+        
+        Texto do Botão: 
+            #F6F9D7 (Amarelo muito claro) - Cria contraste suficiente e é facilmente legível.
+
+        Texto ao Passar o Mouse:
+            #FFD166 (Amarelo mais escuro) - Um leve escurecimento para indicar a interação.
+*/
+
 .button {
-    background-color: #356E73;
+    background-color: #A565E0;
     border: none;
     border-radius: 10px;
     font-weight: 700;
     font-size: 18px;
     padding: 5px;
     cursor: pointer;
-    color: #E3F2F4;
+    color: #F6F9D7;
     margin: 32px 0px;
     height: 80px;
     font-style: normal;
@@ -17,7 +29,7 @@
 }
 
 .button:hover {
-    color: #9FD5D8;
+    color: #FFD166;
 }
 
 .button .loading {
@@ -25,10 +37,10 @@
     justify-content: center;
     align-items: center;
     height: 100%;
-    color: #E3F2F4;
+    color: #F6F9D7;
     cursor: auto;
 }
 
 .button .loading:hover {
-    color: #E3F2F4;
+    color: #F6F9D7;
 }

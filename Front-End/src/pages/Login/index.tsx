@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { IUser } from '../../shared/interfaces/IUser'
-import TextField from '../../components/TextField'
+import FormTextField from '../../components/FormTextField'
 import Button from '../../components/Button'
 import Alert from '../../components/Alert'
 import { login } from '../../shared/methods/user/Login'
@@ -22,17 +22,16 @@ const Login = () => {
   const [submit, setSubmit] = useState(false)
 
   const [isAlertOpen, setIsAlertOpen] = useState(false)
-  const [alertTittle, setAlertTittle] = useState("");
-  const [alertMessage, setAlertMessage] = useState("");
+  const [alertTitle, setAlertTitle] = useState("")
+  const [alertMessage, setAlertMessage] = useState("")
 
   useEffect(() => {
-    if (location.state && location.state.alertTittle && location.state.alertMessage) {
-      setAlertTittle(location.state.alertTittle);
-      setAlertMessage(location.state.alertMessage);
+    if (location.state && location.state.alertTitle && location.state.alertMessage) {
+      setAlertTitle(location.state.alertTitle)
+      setAlertMessage(location.state.alertMessage)
       setIsAlertOpen(true)
     }
   }, [location.state]);
-
 
   useEffect(() => {
     if (user) {
@@ -41,7 +40,7 @@ const Login = () => {
         const token = await login(
           user,
           (errorTittle, errorMessage) => {
-            setAlertTittle(errorTittle)
+            setAlertTitle(errorTittle)
             setAlertMessage(errorMessage)
           }
         )
@@ -82,13 +81,13 @@ const Login = () => {
   return (
     <BaseForm onSubmit={handleSubmit}>
       <FormTitle>Faça login na sua conta!</FormTitle>
-      <TextField label='Email' value={email} placeHolder='Digite seu email' onAlterado={value => setEmail(value)} />
+      <FormTextField label='Email' value={email} placeHolder='Digite seu email' onAlterado={value => setEmail(value)} />
 
-      <TextField label='Senha' value={password} type='password' placeHolder='Digite sua senha' onAlterado={value => setPassword(value)} />
+      <FormTextField label='Senha' value={password} type='password' placeHolder='Digite sua senha' onAlterado={value => setPassword(value)} />
 
       <Button isLoading={isLoading}>Entrar</Button>
 
-      {isAlertOpen && <Alert tittle={alertTittle} message={alertMessage} onClose={() => setIsAlertOpen(false)} />}
+      {isAlertOpen && <Alert title={alertTitle} message={alertMessage} onClose={() => setIsAlertOpen(false)} />}
     </BaseForm>
   )
 }

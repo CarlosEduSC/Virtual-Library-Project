@@ -1,0 +1,11 @@
+.user-card {
+    background-color: #A3C7C9;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.user-card h1 {
+    text-align: center;
+    color: #356E73;
+    cursor: pointer;
+}

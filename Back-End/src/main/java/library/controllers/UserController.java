@@ -25,7 +25,7 @@ import library.domain.user.UpdateUserData;
 import library.domain.user.ShowUserData;
 import library.domain.user.User;
 import library.domain.user.UserRepository;
-import library.infra.Error.ErrorData;
+import library.infra.AlertData;
 import library.infra.security.TokenService;
 
 @RestController
@@ -43,10 +43,10 @@ public class UserController {
     @PostMapping("/create")
     public ResponseEntity createUser(@Valid @RequestBody CreateUserData data,
             UriComponentsBuilder uriBuilder) {
-        String title = "Erro ao tentar cadastrar o usuario!";
+        String errorTitle = "Erro ao tentar cadastrar o usuario!";
 
         if (repository.existsByEmail(data.email())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorData(title, "Email já está em uso."));
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new AlertData(errorTitle, "Email já está em uso."));
         }
 
         try {
@@ -56,40 +56,101 @@ public class UserController {
 
             var uri = uriBuilder.path("/user/create/{id}").buildAndExpand(user.getId()).toUri();
 
-            return ResponseEntity.created(uri).body(new ShowUserData(user));
-        
+            return ResponseEntity.created(uri).body(new AlertData("Usuário Criado com Sucesso!",
+                    "O novo usuário foi cadastrado com sucesso e agora pode acessar o sistema."));
+
         } catch (DataAccessException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorData(title, "Erro ao salvar o usuário no banco de dados."));
-        
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new AlertData(errorTitle, "Erro ao salvar o usuário no banco de dados."));
+
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorData(title, "Erro inesperado ao criar o usuário."));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new AlertData(errorTitle, "Erro inesperado ao criar o usuário."));
         }
     }
 
+    @SuppressWarnings("rawtypes")
     @GetMapping("/find-all")
-    public ResponseEntity<List<ShowUserData>> findAllUsers() {
-        var users = repository.findAll();
+    public ResponseEntity findAllUsers() {
+        try {
+            var users = repository.findAll();
 
-        List<ShowUserData> usersData = new ArrayList<ShowUserData>();
+            List<ShowUserData> usersData = new ArrayList<ShowUserData>();
 
-        for (User user : users) {
-            usersData.add(new ShowUserData(user));
+            for (User user : users) {
+                usersData.add(new ShowUserData(user));
+            }
+
+            return ResponseEntity.ok(usersData);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new AlertData("Erro ao buscar todos os usuarios!",
+                            "Ocorreu um erro inesperado no servidor."));
         }
-
-        return ResponseEntity.ok(usersData);
     }
 
+    @SuppressWarnings("rawtypes")
     @GetMapping("/find-all-active")
-    public ResponseEntity<List<ShowUserData>> findAllUsersActive() {
-        var users = repository.findAllByActiveTrue();
+    public ResponseEntity findAllUsersActive() {
+        try {
+            var users = repository.findAllByActiveTrue();
 
-        List<ShowUserData> usersData = new ArrayList<ShowUserData>();
+            List<ShowUserData> usersData = new ArrayList<ShowUserData>();
 
-        for (User user : users) {
-            usersData.add(new ShowUserData(user));
+            for (User user : users) {
+                usersData.add(new ShowUserData(user));
+            }
+
+            return ResponseEntity.ok(usersData);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new AlertData("Erro ao buscar os usuarios com contas ativas!",
+                            "Ocorreu um erro inesperado no servidor."));
         }
+    }
 
-        return ResponseEntity.ok(usersData);
+    @SuppressWarnings("rawtypes")
+    @GetMapping("/find-all-admins")
+    public ResponseEntity findAllAdmins() {
+        try {
+            var users = repository.findAllBytypeADMIN();
+
+            List<ShowUserData> usersData = new ArrayList<ShowUserData>();
+
+            for (User user : users) {
+                usersData.add(new ShowUserData(user));
+            }
+
+            return ResponseEntity.ok(usersData);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new AlertData("Erro ao buscar os usuarios do tipo administrador!",
+                            "Ocorreu um erro inesperado no servidor."));
+        }
+    }
+
+    @SuppressWarnings("rawtypes")
+    @GetMapping("/find-all-readers")
+    public ResponseEntity findAllReaders() {
+        try {
+            var users = repository.findAllBytypeREADER();
+
+            List<ShowUserData> usersData = new ArrayList<ShowUserData>();
+
+            for (User user : users) {
+                usersData.add(new ShowUserData(user));
+            }
+
+            return ResponseEntity.ok(usersData);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new AlertData("Erro ao buscar os usuarios do tipo leitor!",
+                            "Ocorreu um erro inesperado no servidor."));
+        }
     }
 
     @GetMapping("/find/{id}")
@@ -137,31 +198,33 @@ public class UserController {
     public ResponseEntity verifyUser(HttpServletRequest request) {
         String token = "";
 
-        String title = "Erro ao verificar autenticação!";
+        String errorTitle = "Erro ao verificar autenticação!";
 
         if (request.getHeader("Authorization") != null) {
             token = request.getHeader("Authorization").replace("Bearer ", "");
-        
+
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorData(title, "Token de autorização ausente."));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new AlertData(errorTitle, "Token de autorização ausente."));
         }
 
         String userEmail = tokenService.getSubject(token);
 
         if (userEmail == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new ErrorData(title, "Token inválido ou vazio."));
+                    .body(new AlertData(errorTitle, "Token inválido ou vazio."));
         }
 
         var user = repository.findByEmail(userEmail);
 
         if (user == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorData(title, "Usuário não encontrado."));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new AlertData(errorTitle, "Usuário não encontrado."));
         }
 
         if (!user.getActive()) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body(new ErrorData(title, "Usuário está com a conta desativada."));
+                    .body(new AlertData(errorTitle, "Usuário está com a conta desativada."));
         }
 
         return ResponseEntity.noContent().build();

@@ -14,13 +14,13 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
 
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null)
 
-  const [alertTittle, setAlertTittle] = useState("");
+  const [alertTitle, setAlertTitle] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
 
   useEffect(() => {
     const checkAuthentication = async () => {
       const isUserAuthenticated = await verifyUser((errorTittle, errorMessage) => {
-        setAlertTittle(errorTittle)
+        setAlertTitle(errorTittle)
         setAlertMessage(errorMessage)
       });
 
@@ -61,7 +61,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
   return (isAuthenticated ? element : location.pathname != "/" ?
     <Navigate
       to="/login"
-      state={{ from: location, alertTittle: alertTittle, alertMessage: alertMessage }}
+      state={{ from: location, alertTitle: alertTitle, alertMessage: alertMessage }}
       replace
     /> :
 

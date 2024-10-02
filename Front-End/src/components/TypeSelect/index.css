@@ -1,3 +1,12 @@
+/* CORES
+    TypeSelect:
+        Fundo: 
+            #9FD5D8 (Verde água suave) - Mesmo fundo dos campos de input para uniformidade.
+
+        Texto ao Passar o Mouse: 
+            #F7C24A (Amarelo vibrante) - Dá destaque à interação.
+*/
+
 .type-select {
     margin-top: 24px;
     align-self: baseline;
@@ -17,7 +26,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #B3D9DD;
+    background-color: #9FD5D8;
     box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.06);
     height: 60px;
     border: none;
@@ -48,7 +57,7 @@
     left: 50%;
     transform: translateX(-50%);
     list-style:none;
-    background-color: #B3D9DD;
+    background-color: #9FD5D8;
     box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.06);
     border: none;
     box-sizing: border-box;

@@ -102,16 +102,18 @@ const Menu = () => {
                     </li>
                 }
 
-                <li className="item">
-                    <img className='option-img' alt='Lista de Usuarios' src='/images/list.png' />
+                {location.pathname != "/listUsers" &&
+                    <li className="item" onClick={() => navigate("/listUsers")}>
+                        <img className='option-img' alt='Lista de Usuarios' src='/images/list.png' />
 
-                    Lista de usuarios
-                </li>
+                        Lista de usuarios
+                    </li>
+                }
             </ul>
 
             <ul className={type == "ADMIN" ? "items-livro" : "menu-options"} style={{ visibility: livroIsOpen ? "visible" : "hidden" }}>
 
-                {type != "LEITOR" ?
+                {type != "READER" ?
                     <>
                         <li className='item'>
                             <img className='option-img' alt='Cadastrar Livro' src='/images/add.png' />

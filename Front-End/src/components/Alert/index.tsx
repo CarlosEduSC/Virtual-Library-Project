@@ -2,15 +2,15 @@ import './index.css'
 
 interface AlertProps {
     message: string,
-    tittle: string,
+    title: string,
     onClose: () => void
 }
 
-const Alert = ({ message, tittle, onClose }: AlertProps) => {
+const Alert = ({ message, title, onClose }: AlertProps) => {
     return (
         <div className='alert'>
             <div className='alert-top'>
-                <h2 className='alert-tittle'>{tittle}</h2>
+                <h2 className='alert-tittle'>{title}</h2>
 
                 <img className='alert-img' alt='Fechar' src='/images/close.png' onClick={onClose} />
             </div>

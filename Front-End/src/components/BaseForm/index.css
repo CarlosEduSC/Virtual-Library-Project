@@ -1,3 +1,9 @@
+/* CORES
+    BaseForm:
+        Fundo: 
+            #90E0EF (Azul claro) - Traz uma leveza ao formulário, com contraste moderado em relação ao fundo da página.
+*/
+
 .base-form {
     display: flex;
     justify-content: center;
@@ -7,7 +13,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #7EBDC2;
+    background-color: #90E0EF;
     border-radius: 20px;
     padding: 36px 64px;
     box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.08);

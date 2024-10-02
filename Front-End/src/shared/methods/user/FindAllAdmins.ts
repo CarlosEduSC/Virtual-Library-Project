@@ -1,7 +1,7 @@
 import { IUser } from "../../interfaces/IUser";
 import api from "../api";
 
-export const findAllActiveUsers = async (
+export const findAllAdmins = async (
     setUsers: (users: IUser[]) => void,
     onError: (title: string, message: string
     ) => void): Promise<boolean> => {

@@ -1,4 +1,4 @@
-package library.infra.Error;
+package library.infra;
 
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.ResponseEntity;

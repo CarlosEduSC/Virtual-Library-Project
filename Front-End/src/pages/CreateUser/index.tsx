@@ -1,20 +1,17 @@
 import { useEffect, useState } from 'react'
-import './index.css'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { IUser } from '../../shared/interfaces/IUser'
-import TextField from '../../components/TextField'
+import FormTextField from '../../components/FormTextField'
 import Alert from '../../components/Alert'
 import BaseForm from '../../components/BaseForm'
 import Button from '../../components/Button'
 import FormTitle from '../../components/FormTitle'
 import TypeSelect from '../../components/TypeSelect'
+import { createUser } from '../../shared/methods/user/CreateUser'
 
 const CreateUser = () => {
   const navigate = useNavigate()
-
-  if (location.pathname == "/login") {
-    localStorage.setItem('token', "")
-  }
+  const location = useLocation()
 
   const [user, setUser] = useState<IUser>()
   const [name, setName] = useState("")
@@ -25,16 +22,17 @@ const CreateUser = () => {
 
   const [isLoading, setIsLoading] = useState(false)
   const [submit, setSubmit] = useState(false)
+  const [successState, setSuccessState] = useState(false)
 
   const [isAlertOpen, setIsAlertOpen] = useState(false)
-  const [alertTittle, setAlertTittle] = useState("");
+  const [alertTitle, setAlertTitle] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
 
   const handleTypeSelected = (typeSelected: string) => {
     if (typeSelected == "Leitor") {
-      setType("LEITOR")
-    
-    } else {
+      setType("READER")
+
+    } else if (typeSelected == "Administrador") {
       setType("ADMIN")
     }
   }
@@ -42,18 +40,51 @@ const CreateUser = () => {
   useEffect(() => {
     const fetchSubmit = async () => {
       if (user) {
+        const success = await createUser(
+          user,
+          (alertTitle, alertMessage) => {
+            setAlertTitle(alertTitle)
+            setAlertMessage(alertMessage)
+          }
+        )
+
+        if (success) {
+          setSuccessState(true);
+
+          setIsLoading(false);
         
+        } else {
+          setIsLoading(false);
+          
+          setIsAlertOpen(true);
+        }
       }
     }
 
-  }, [submit])
+    if (submit) {
+      fetchSubmit()
+    }
+
+  }, [submit, user])
+
+  useEffect(() => {
+    if (successState) {
+      const stateData = {
+        from: location,
+        alertTitle,
+        alertMessage
+      };
+
+      navigate("/", { state: stateData, replace: true });
+    }
+  }, [successState, alertTitle, alertMessage, navigate, location]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     setIsLoading(true)
 
-    if (password == passwordCheck) {
+    if (password == passwordCheck && (type == "ADMIN" || type == "READER")) {
       const userData: IUser = {
         id: "",
         name,
@@ -62,13 +93,19 @@ const CreateUser = () => {
         type,
         active: true
       }
-  
+
       setUser(userData)
       setSubmit(true)
-    
+
     } else {
-      setAlertTittle("Dados inválidos!")
-      setAlertMessage("A confirmação de senha não condiz com a senha digitada.")
+      setAlertTitle("Dados inválidos!")
+
+      if (password != passwordCheck) {
+        setAlertMessage("A confirmação de senha não condiz com a senha digitada.")
+      
+      } else {
+        setAlertMessage("O tipo de usuario que sera criado não foi selecionado.")
+      }
 
       setIsAlertOpen(true)
 
@@ -81,7 +118,7 @@ const CreateUser = () => {
 
       <FormTitle>Preencha os campos abaixo para cadastrar um novo usuário.</FormTitle>
 
-      <TextField
+      <FormTextField
         label='Nome'
         placeHolder='Digite o nome do usuario'
         value={name}
@@ -89,7 +126,7 @@ const CreateUser = () => {
         minLength={3}
       />
 
-      <TextField
+      <FormTextField
         label='Email'
         placeHolder='Digite o email do usuario'
         value={email}
@@ -98,7 +135,7 @@ const CreateUser = () => {
         minLength={5}
       />
 
-      <TextField
+      <FormTextField
         label='Senha'
         placeHolder='Digite a senha do usuario'
         value={password}
@@ -106,7 +143,7 @@ const CreateUser = () => {
         onAlterado={value => setPassword(value)}
       />
 
-      <TextField
+      <FormTextField
         label='Confirmar Senha'
         placeHolder='Digite novamente a senha do usuario'
         value={passwordCheck}
@@ -114,11 +151,11 @@ const CreateUser = () => {
         onAlterado={value => setPasswordCheck(value)}
       />
 
-      <TypeSelect options={["Leitor", "Administrador"]} onOptionSelected={handleTypeSelected}/>
+      <TypeSelect options={["Leitor", "Administrador"]} onOptionSelected={handleTypeSelected} />
 
       <Button isLoading={isLoading}>Cadastrar</Button>
 
-      {isAlertOpen && <Alert tittle={alertTittle} message={alertMessage} onClose={() => setIsAlertOpen(false)} />}
+      {isAlertOpen && <Alert title={alertTitle} message={alertMessage} onClose={() => setIsAlertOpen(false)} />}
     </BaseForm>
   )
 }

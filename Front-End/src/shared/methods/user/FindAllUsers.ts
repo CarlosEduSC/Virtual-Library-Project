@@ -1,19 +1,33 @@
 import { IUser } from "../../interfaces/IUser";
 import api from "../api";
 
-export const findAllUsers = async (onError: (message: string) => void): Promise<IUser[]> => {
-
-    const reponse = await api.get<IUser[]>("/user/find-all");
+export const findAllUsers = async (
+    setUsers: (users: IUser[]) => void,
+    onError: (title: string, message: string
+    ) => void): Promise<boolean> => {
 
     try {
-        if (reponse.status != 200) {
-            onError("Erro ao buscar todos os usuarios: " + reponse.statusText)
+        const reponse = await api.get("/user/find-all")
 
+        if (reponse.status == 200) {
+            setUsers(reponse.data)
+
+            return true
+
+        } else {
+            onError(reponse.data.title, reponse.data.message)
+
+            return false
         }
 
-    } catch (error) {
-        onError("Erro ao tentar buscar todos os usuarios: " + error)
-    }
+    } catch (error: any) {
+        if (error.response && error.response.data) {
+            onError(error.reponse.data.title, error.response.data.message)
 
-    return reponse.data
+        } else {
+            onError(error.title, error.message)
+        }
+
+        return false
+    }
 }

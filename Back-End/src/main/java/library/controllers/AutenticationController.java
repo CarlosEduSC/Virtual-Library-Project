@@ -15,7 +15,7 @@ import jakarta.validation.Valid;
 import library.domain.user.AutenticationData;
 import library.domain.user.User;
 import library.domain.user.UserRepository;
-import library.infra.Error.ErrorData;
+import library.infra.AlertData;
 import library.infra.security.TokenService;
 
 @RestController
@@ -39,18 +39,18 @@ public class AutenticationController {
     public ResponseEntity LogIn(@Valid @RequestBody AutenticationData data) {
         var user = repository.findByEmail(data.email());
 
-        String title = "Erro ao tentar fazer login!";
+        String errorTitle = "Erro ao tentar fazer login!";
 
         if (user == null) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorData(title,"E-mail inválido ou usuário não cadastrado."));
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new AlertData(errorTitle,"E-mail inválido ou usuário não cadastrado."));
         }
 
         if (!user.getActive()) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorData(title,"Usuário está com a conta desativada."));
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new AlertData(errorTitle,"Usuário está com a conta desativada."));
         }
 
         if (!passwordEncoder.matches(data.password(), user.getPassword())) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorData(title,"Senha inválida."));
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new AlertData(errorTitle,"Senha inválida."));
         }
 
         var autenticationToken = new UsernamePasswordAuthenticationToken(data.email(), data.password(), user.getAuthorities());
@@ -61,7 +61,7 @@ public class AutenticationController {
             return ResponseEntity.ok(tokenJWT.replace("Baerer ", ""));
         
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorData(title, "Erro interno ao processar a solicitação."));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new AlertData(errorTitle, "Erro interno ao processar a solicitação."));
         }
     }
 }

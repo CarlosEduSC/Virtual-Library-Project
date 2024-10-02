@@ -10,13 +10,13 @@ interface TextFieldProps {
   minLength?: number
 }
 
-const TextField = ({ onAlterado, label, value, required = true, placeHolder = "", type = "text", minLength = 8}: TextFieldProps) => {
+const FormTextField = ({ onAlterado, label, value, required = true, placeHolder = "", type = "text", minLength = 8}: TextFieldProps) => {
   const onDigitado = (event: React.ChangeEvent<HTMLInputElement>) => {
     onAlterado(event.target.value)
   }
 
   return (
-    <div className='campo-texto'>
+    <div className='form-text-field'>
       <label>{label}</label>
 
       <input
@@ -31,4 +31,4 @@ const TextField = ({ onAlterado, label, value, required = true, placeHolder = ""
   )
 }
 
-export default TextField
+export default FormTextField

@@ -34,7 +34,7 @@ const TypeSelect = ({ options , onOptionSelected}: TypeSelectProps) => {
             {isOpen && (
                 <ul >
                     {options.map((option) => (
-                        <li onClick={() => handleOptionClick(option)}>
+                        <li key={option} onClick={() => handleOptionClick(option)}>
                             {option}
                         </li>
                     ))}

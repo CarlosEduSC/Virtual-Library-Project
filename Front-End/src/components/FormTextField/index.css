@@ -1,0 +1,50 @@
+/* CORES
+    FormTextField:
+        Fundo do input:
+            #9FD5D8 (Verde água suave) - Cria um contraste suave com o fundo do formulário, mantendo a harmonia.
+
+        Placeholder do input:
+            #356E73 (Verde escuro) - Para contraste forte, enquanto mantém a identidade de cor.
+
+        Texto digitado no input:
+            #356E73 - O mesmo tom do placeholder, para consistência.
+*/
+
+.form-text-field {
+    margin: 24px 0px;
+    width: 100%;
+}
+
+.form-text-field label {
+    display: block;
+    margin-bottom: 8px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 22px;
+}
+
+.form-text-field input {
+    background-color: #9FD5D8;
+    box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.06);
+    width: 100%;
+    height: 80px;
+    border: none;
+    font-size: 18px;
+    padding: 24px;
+    box-sizing: border-box;
+    color: #356E73;
+}
+
+.form-text-field input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.form-text-field input::placeholder {
+    color: #356E73;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 20px;
+}

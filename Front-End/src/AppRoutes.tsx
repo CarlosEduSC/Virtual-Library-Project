@@ -7,6 +7,7 @@ import getUserTypeFromToken from "./shared/methods/user/GetUserTypeFromToken"
 import Login from "./pages/Login"
 import CreateUser from "./pages/CreateUser"
 import UpdateUser from "./pages/UpdateUser"
+import UserList from "./pages/UserList"
 
 const AppRoutes = () => {
     const [type, setType] = useState("")
@@ -33,6 +34,7 @@ const AppRoutes = () => {
                     <Route element={<BasePage />}>
                         <Route path="/createUser" element={<ProtectedRoute element={<CreateUser />} />} />
                         <Route path="/updateUser" element={<ProtectedRoute element={<UpdateUser />} />} />
+                        <Route path="/listUsers" element={<ProtectedRoute element={<UserList />} />} />
                     </Route>
                 }
             </Routes>
