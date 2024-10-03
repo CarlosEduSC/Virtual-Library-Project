@@ -7,7 +7,7 @@ export const findAllReaders = async (
     ) => void): Promise<boolean> => {
 
     try {
-        const reponse = await api.get("/user/find-all")
+        const reponse = await api.get("/user/find-all-readers")
 
         if (reponse.status == 200) {
             setUsers(reponse.data)

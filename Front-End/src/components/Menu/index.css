@@ -13,29 +13,30 @@
     position: absolute;
     border-radius: 10px;
     text-align: center;
+    z-index: 999;
 }
 
 .menu .menu-options {
-    right: 55px;
-    top: 30px;
+    right: 60px;
+    top: 35px;
     padding: 10px;
     background-color: #B3D9DD;
 }
 
 .menu .items-usuario,
 .items-livro {
-    right: 240px;
+    right: 245px;
     padding: 5px;
     border-radius: 10px;
     background-color: #A3C7C9;
 }
 
 .menu .items-usuario {
-    top: 30px;
+    top: 35px;
 }
 
 .menu .items-livro {
-    top: 80px;
+    top: 85px;
 }
 
 .menu .option, .item {

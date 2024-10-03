@@ -1,15 +1,3 @@
-/* CORES
-    FormTextField:
-        Fundo do input:
-            #9FD5D8 (Verde água suave) - Cria um contraste suave com o fundo do formulário, mantendo a harmonia.
-
-        Placeholder do input:
-            #356E73 (Verde escuro) - Para contraste forte, enquanto mantém a identidade de cor.
-
-        Texto digitado no input:
-            #356E73 - O mesmo tom do placeholder, para consistência.
-*/
-
 .form-text-field {
     margin: 24px 0px;
     width: 100%;
@@ -25,7 +13,7 @@
 }
 
 .form-text-field input {
-    background-color: #9FD5D8;
+    background-color: #FFFFFF;
     box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.06);
     width: 100%;
     height: 80px;

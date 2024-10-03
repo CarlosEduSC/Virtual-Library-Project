@@ -1,19 +1,10 @@
-/* CORES
-    TypeSelect:
-        Fundo: 
-            #9FD5D8 (Verde água suave) - Mesmo fundo dos campos de input para uniformidade.
-
-        Texto ao Passar o Mouse: 
-            #F7C24A (Amarelo vibrante) - Dá destaque à interação.
-*/
-
-.type-select {
+.select {
     margin-top: 24px;
     align-self: baseline;
     position: relative;
 }
 
-.type-select label {
+.select label {
     display: block;
     margin-bottom: 8px;
     font-style: normal;
@@ -22,11 +13,11 @@
     line-height: 22px;
 }
 
-.type-select .selected {
+.select .selected {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #9FD5D8;
+    background-color: #FFFFFF;
     box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.06);
     height: 60px;
     border: none;
@@ -38,39 +29,47 @@
     cursor: pointer;
     padding: 10px;
     min-width: 205px;
-}
-
-.type-select .selected:hover {
+    width: auto;
     color: #356E73;
 }
 
-.type-select img {
+.select .selected:hover {
+    color: #4C9AA0;
+}
+
+.select img {
     height: 50%;
     margin-left: 5px;
     margin-top: 5px;
 }
 
-.type-select ul {
+.select ul {
     display: block;
     position: absolute;
     top: 85%;
     left: 50%;
     transform: translateX(-50%);
     list-style:none;
-    background-color: #9FD5D8;
+    background-color: #FFFFFF;
     box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.06);
     border: none;
     box-sizing: border-box;
     cursor: pointer;
     padding-left: 0%;
+    min-width: 205px;
+    width: auto;
 }
 
-.type-select li {
+.select li {
     text-align: center;
     font-size: 18px;
     padding: 5px;
+    color: #356E73;
+    width: 100%;
+    white-space: nowrap;
+    box-sizing: border-box;
 }
 
-.type-select li:hover {
-    color: #356E73;
+.select li:hover {
+    color: #4C9AA0;
 }

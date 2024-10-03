@@ -2,6 +2,7 @@ package library.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import library.domain.user.CreateUserData;
 import library.domain.user.UpdateUserData;
@@ -43,7 +45,7 @@ public class UserController {
     @PostMapping("/create")
     public ResponseEntity createUser(@Valid @RequestBody CreateUserData data,
             UriComponentsBuilder uriBuilder) {
-        String errorTitle = "Erro ao tentar cadastrar o usuario!";
+        String errorTitle = errorTitleGenerate("cadastrar o usuario");
 
         if (repository.existsByEmail(data.email())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new AlertData(errorTitle, "Email já está em uso."));
@@ -59,138 +61,128 @@ public class UserController {
             return ResponseEntity.created(uri).body(new AlertData("Usuário Criado com Sucesso!",
                     "O novo usuário foi cadastrado com sucesso e agora pode acessar o sistema."));
 
-        } catch (DataAccessException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new AlertData(errorTitle, "Erro ao salvar o usuário no banco de dados."));
-
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new AlertData(errorTitle, "Erro inesperado ao criar o usuário."));
+            return handleError(errorTitle, e);
         }
     }
 
     @SuppressWarnings("rawtypes")
     @GetMapping("/find-all")
     public ResponseEntity findAllUsers() {
+        String errorTitle = errorTitleGenerate("buscar todos os usuarios");
+
         try {
             var users = repository.findAll();
 
-            List<ShowUserData> usersData = new ArrayList<ShowUserData>();
-
-            for (User user : users) {
-                usersData.add(new ShowUserData(user));
-            }
-
-            return ResponseEntity.ok(usersData);
+            return ResponseEntity.ok(mapUsers(users));
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new AlertData("Erro ao buscar todos os usuarios!",
-                            "Ocorreu um erro inesperado no servidor."));
+            return handleError(errorTitle, e);
         }
     }
 
     @SuppressWarnings("rawtypes")
     @GetMapping("/find-all-active")
     public ResponseEntity findAllUsersActive() {
+        String errorTitle = errorTitleGenerate("buscar os usuarios com contas ativas");
+
         try {
             var users = repository.findAllByActiveTrue();
 
-            List<ShowUserData> usersData = new ArrayList<ShowUserData>();
-
-            for (User user : users) {
-                usersData.add(new ShowUserData(user));
-            }
-
-            return ResponseEntity.ok(usersData);
+            return ResponseEntity.ok(mapUsers(users));
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new AlertData("Erro ao buscar os usuarios com contas ativas!",
-                            "Ocorreu um erro inesperado no servidor."));
+            return handleError(errorTitle, e);
         }
     }
 
     @SuppressWarnings("rawtypes")
     @GetMapping("/find-all-admins")
     public ResponseEntity findAllAdmins() {
+        String errorTitle = errorTitleGenerate("buscar os usuarios do tipo administrador");
+
         try {
-            var users = repository.findAllBytypeADMIN();
+            var users = repository.findAllByType("ADMIN");
 
-            List<ShowUserData> usersData = new ArrayList<ShowUserData>();
-
-            for (User user : users) {
-                usersData.add(new ShowUserData(user));
-            }
-
-            return ResponseEntity.ok(usersData);
+            return ResponseEntity.ok(mapUsers(users));
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new AlertData("Erro ao buscar os usuarios do tipo administrador!",
-                            "Ocorreu um erro inesperado no servidor."));
+            return handleError(errorTitle, e);
         }
     }
 
     @SuppressWarnings("rawtypes")
     @GetMapping("/find-all-readers")
     public ResponseEntity findAllReaders() {
+        String errorTitle = errorTitleGenerate("buscar os usuarios do tipo leitor");
+
         try {
-            var users = repository.findAllBytypeREADER();
+            var users = repository.findAllByType("READER");
 
-            List<ShowUserData> usersData = new ArrayList<ShowUserData>();
-
-            for (User user : users) {
-                usersData.add(new ShowUserData(user));
-            }
-
-            return ResponseEntity.ok(usersData);
+            return ResponseEntity.ok(mapUsers(users));
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new AlertData("Erro ao buscar os usuarios do tipo leitor!",
-                            "Ocorreu um erro inesperado no servidor."));
+            return handleError(errorTitle, e);
         }
     }
 
+    @SuppressWarnings("rawtypes")
     @GetMapping("/find/{id}")
-    public ResponseEntity<ShowUserData> findUserById(@PathVariable String id) {
-        var user = repository.findById(id).get();
+    public ResponseEntity findUserById(@PathVariable String id) {
+        String errorTitle = errorTitleGenerate("buscar o usuario");
 
-        return ResponseEntity.ok(new ShowUserData(user));
-    }
+        try {
+            Optional<User> optionalUser = repository.findById(id);
 
-    @Transactional
-    @PutMapping("/update")
-    public ResponseEntity<ShowUserData> updateUser(@Valid @RequestBody UpdateUserData data) {
-        var user = repository.findById(data.id()).get();
+            if (optionalUser.isPresent()) {
+                return ResponseEntity.ok(new ShowUserData(optionalUser.get()));
 
-        user.updateUser(data);
-
-        repository.save(user);
-
-        return ResponseEntity.ok(new ShowUserData(user));
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new AlertData(errorTitle, "Usuario não encontrado."));
+            }
+        } catch (Exception e) {
+            return handleError(errorTitle, e);
+        }
     }
 
     @SuppressWarnings("rawtypes")
     @Transactional
+    @PutMapping("/update")
+    public ResponseEntity updateUser(@Valid @RequestBody UpdateUserData data) {
+        String errorTitle = errorTitleGenerate("atualizar os dados do usuario");
+
+        try {
+            Optional<User> optionalUser = repository.findById(data.id());
+
+            if (optionalUser.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new AlertData(errorTitle, "Usuario não encontrado."));
+            }
+
+            var user = optionalUser.get();
+
+            user.updateUser(data);
+
+            repository.save(user);
+
+            return ResponseEntity.ok(new ShowUserData(user));
+
+        } catch (Exception e) {
+            return handleError(errorTitle, e);
+        }
+    }
+
+    @SuppressWarnings("rawtypes")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity deleteUser(@PathVariable String id) {
-        var user = repository.findById(id).get();
-
-        user.setActive(false);
-
-        return ResponseEntity.noContent().build();
+        return changeUserActive(id, false);
     }
 
     @SuppressWarnings("rawtypes")
     @PutMapping("reactivate/{id}")
     public ResponseEntity reactivateUser(@PathVariable String id) {
-        var user = repository.findById(id).get();
-
-        user.setActive(true);
-
-        return ResponseEntity.noContent().build();
+        return changeUserActive(id, true);
     }
 
     @SuppressWarnings("rawtypes")
@@ -228,5 +220,71 @@ public class UserController {
         }
 
         return ResponseEntity.noContent().build();
+    }
+
+    public String errorTitleGenerate(String text) {
+        return "Erro ao tentar " + text + "!";
+    }
+
+    @SuppressWarnings("rawtypes")
+    public ResponseEntity handleError(String title, Exception e) {
+        if (e instanceof DataAccessException) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new AlertData(title, "Ocorreu um erro ao acessar o banco de dados."));
+
+        } else if (e instanceof ConstraintViolationException) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new AlertData(title, "Violação de integridade dos dados ao tentar salvar o usuário."));
+
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new AlertData(title, "Ocorreu um erro inesperado no servidor."));
+        }
+    }
+
+    public List<ShowUserData> mapUsers(List<User> users) {
+        List<ShowUserData> usersData = new ArrayList<ShowUserData>();
+
+        for (User user : users) {
+            usersData.add(new ShowUserData(user));
+        }
+
+        return usersData;
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Transactional
+    public ResponseEntity changeUserActive(@PathVariable String id, boolean active) {
+        String errorTitle = errorTitleGenerate(active ? "reativar" : "desativar" + " a conta do usuario");
+
+        try {
+            Optional<User> optionalUser = repository.findById(id);
+
+            if (optionalUser.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new AlertData(errorTitle, "Usuario não encontrado."));
+
+            }
+
+            var user = optionalUser.get();
+
+            if (user.getActive() == active) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body(new AlertData(errorTitle,
+                                "A conta do usuario já está " + (active ? "ativa" : "desativada") + "."));
+
+            } else {
+                user.setActive(false);
+
+                repository.save(user);
+
+                return ResponseEntity.ok().body(new AlertData("Conta " + (active ? "reativada" : "desativada") + "!",
+                        "A conta do usuario foi " + (active ? "reativada" : "desativada")
+                                + " com sucesso e agora ele " + (active ? "já" : "não")
+                                + " pode " + (active ? "voltar a" : "mais") + " acessar o sistema."));
+            }
+        } catch (Exception e) {
+            return handleError(errorTitle, e);
+        }
     }
 }

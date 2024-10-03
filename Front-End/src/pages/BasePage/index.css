@@ -12,30 +12,46 @@
 }
 
 /*
-Fundo Principal: fundo #E3F2F4.
+Fundo Principal: 
+    fundo #E3F2F4.
 
-Header/Footer: fundo #7EBDC2.
+
+Header/Footer: 
+    fundo #7EBDC2.
+
 
 Menu:
-    Primeira Aba: fundo #B3D9DD
+    Primeira Aba: 
+        fundo #7EBDC2
 
-    Segunda Aba: fundo #A3C7C9
+    Segunda Aba: 
+        fundo #A3C7C9
 
     texto hover das duas abas #356E73
 
+
 Formulário:
+    fundo #B3D9DD
 
-    Fundo: #B3D9DD, um azul claro neutro que não rouba a atenção do usuário.
-    Campos de Texto: O fundo dos campos é branco #FFFFFF, os placeholders são em azul claro #9FD5D8, e o texto digitado tem a mesma cor do placeholder, mantendo a harmonia visual.
-    Campo de Seleção: O fundo segue a mesma cor dos campos #FFFFFF, e o texto é preto #000000. Ao passar o mouse, o texto muda para o tom do placeholder #9FD5D8.
+    campos #FFFFFF
 
-Botão (#06D6A0): Um verde vibrante que se destaca na página. O texto no botão é branco (#FFFFFF), e ao passar o mouse, o texto fica um pouco mais escuro, em #04B386.
+    placeholders e texto digitado #356E73
 
-Alerta de Erro:
+    
+Select: 
+    fundo #FFFFFF
+    
+    texto #000000
+    
+    onHover o texto muda para #356E73
 
-    O fundo do alerta é um amarelo quente #FFD166 para chamar atenção.
-    O título é preto (#000000), e o texto tem um tom mais claro de cinza escuro (#4C4C4C), criando contraste.
-    O botão de fechar (X) tem um fundo transparente que pega a cor do alerta. Ao passar o mouse, o fundo muda para um vermelho claro (#FF6B6B), para sinalizar a ação de fechamento.
+
+Botão: 
+    fundo #B3D9DD
+    
+    texto #4C9AA0
+     
+    onHover o texto fica #356E73
 */
 
-/* #7EBDC2 #356E73 #90E0EF #9FD5D8 #06D6A0 #E3F2F4 #4C9AA0 #356E73 #B3D9DD #A3C7C9*/
+/* #7EBDC2 #356E73 #90E0EF #9FD5D8 #06D6A0 #E3F2F4 #4C9AA0 #B3D9DD #A3C7C9*/

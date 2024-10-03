@@ -6,8 +6,8 @@ import Alert from '../../components/Alert'
 import BaseForm from '../../components/BaseForm'
 import Button from '../../components/Button'
 import FormTitle from '../../components/FormTitle'
-import TypeSelect from '../../components/TypeSelect'
 import { createUser } from '../../shared/methods/user/CreateUser'
+import Select from '../../components/Select'
 
 const CreateUser = () => {
   const navigate = useNavigate()
@@ -19,6 +19,8 @@ const CreateUser = () => {
   const [password, setPassword] = useState("")
   const [passwordCheck, setPasswordCheck] = useState("")
   const [type, setType] = useState("")
+
+  const types = ["Leitor", "Administrador"]
 
   const [isLoading, setIsLoading] = useState(false)
   const [submit, setSubmit] = useState(false)
@@ -75,7 +77,7 @@ const CreateUser = () => {
         alertMessage
       };
 
-      navigate("/", { state: stateData, replace: true });
+      navigate("/listUsers", { state: stateData, replace: true });
     }
   }, [successState, alertTitle, alertMessage, navigate, location]);
 
@@ -151,7 +153,7 @@ const CreateUser = () => {
         onAlterado={value => setPasswordCheck(value)}
       />
 
-      <TypeSelect options={["Leitor", "Administrador"]} onOptionSelected={handleTypeSelected} />
+      <Select label='Tipo' placeholder='Selecione o tipo do usuario' options={types} onOptionSelected={handleTypeSelected} />
 
       <Button isLoading={isLoading}>Cadastrar</Button>
 

@@ -1,11 +1,11 @@
 import api from "../api"
 
-export const deleteUser = async (
+export const reactivateUser = async (
     id: string,
     onAlert: (title: string, message: string) => void): Promise<boolean> => {
 
     try {
-        const response = await api.delete("/user/delete/" + id)
+        const response = await api.put("/user/reactivate/" + id)
 
         onAlert(response.data.title, response.data.message)
 

@@ -1,11 +1,39 @@
 .user-card {
-    background-color: #A3C7C9;
+    background-color: #7EBDC2;
     padding: 10px;
     border-radius: 10px;
+    margin: 15px;
+    min-width: 300px;
+    min-height: 170px;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+}
+
+.user-card:hover {
+    .delete{
+        visibility: visible;
+    }
 }
 
 .user-card h1 {
-    text-align: center;
     color: #356E73;
     cursor: pointer;
+    width: max-content;
+    margin: 0 auto;
+}
+
+.user-card .delete {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    height: 35px;
+    border-radius: 50%;
+    padding: 3px;
+    visibility: hidden;
+    cursor: pointer;
+}
+
+.user-card .delete:hover {
+    background-color: #356E73;
 }

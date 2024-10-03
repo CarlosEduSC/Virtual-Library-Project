@@ -42,11 +42,11 @@ public class AutenticationController {
         String errorTitle = "Erro ao tentar fazer login!";
 
         if (user == null) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new AlertData(errorTitle,"E-mail inválido ou usuário não cadastrado."));
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new AlertData(errorTitle,"E-mail inválido ou não cadastrado."));
         }
 
         if (!user.getActive()) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new AlertData(errorTitle,"Usuário está com a conta desativada."));
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new AlertData(errorTitle,"Conta desativada."));
         }
 
         if (!passwordEncoder.matches(data.password(), user.getPassword())) {

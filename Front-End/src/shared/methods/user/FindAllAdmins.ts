@@ -7,7 +7,7 @@ export const findAllAdmins = async (
     ) => void): Promise<boolean> => {
 
     try {
-        const reponse = await api.get("/user/find-all")
+        const reponse = await api.get("/user/find-all-admins")
 
         if (reponse.status == 200) {
             setUsers(reponse.data)
