@@ -1,48 +1,38 @@
-import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { IUser } from '../../shared/interfaces/IUser'
+import Button from '../Button'
 import CardTextField from '../CardTextField'
 import './index.css'
-import { deleteUser } from '../../shared/methods/user/DeleteUser'
 
 interface UserCardProps {
   user: IUser
-  onAction: (alertTitle: string, alertMessage: string) => void
+  onAction: () => void
 }
 
 const UserCard = ({ user, onAction }: UserCardProps) => {
-  const [onDeleteSelected, setOnDeleteSelected] = useState(false)
-
-
-
-  useEffect(() => {
-    const fetchDelete = async () => {
-      await deleteUser(
-        user.id,
-        (alertTitle, alertMessage) => {
-          onAction(alertTitle, alertMessage)
-        }
-      )
-    }
-
-    if (onDeleteSelected) {
-      fetchDelete()
-    }
-  }, [])
+  const navigate = useNavigate()
 
   return (
     <div className='user-card'>
-      <img
-        className='delete'
-        alt='Desativar conta do usuario'
-        src='/images/delete.png'
-        onClick={() => setOnDeleteSelected(true)}
-      />
+
+      <img className='edit' alt='Editar os dados do usuario.' src='/images/edit.png' onClick={() => navigate("/updateUser/" + user.id)}/>
 
       <h1>{user.name}</h1>
 
       <CardTextField label='Email'>{user.email}</CardTextField>
       <CardTextField label='Tipo'>{user.type == "ADMIN" ? "Administrador" : "Leitor"}</CardTextField>
       <CardTextField label='Situação da conta do usuario'>{user.active ? "Ativa" : "Desativada"}</CardTextField>
+
+      <div className='active'>
+        <Button
+          isLoading={false}
+          height={30}
+          fontSize={15}
+          borderRadius={7}
+          onClick={onAction}
+
+        >{user.active ? "Desativar Conta" : "Reativar Conta"}</Button>
+      </div>
     </div>
   )
 }

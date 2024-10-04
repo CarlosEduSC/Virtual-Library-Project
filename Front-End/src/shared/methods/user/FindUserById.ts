@@ -3,18 +3,31 @@ import api from "../api";
 
 export const findUserById = async (
     id: string,
-    onError: (message: string) => void): Promise<IUser> => {
+    setUser: (user: IUser) => void,
+    onAlert: (title: string, message: string) => void): Promise<boolean> => {
 
-    const response = await api.get<IUser>("/user/find/" + id)
+        try {
+            const response = await api.get("/user/find/" + id)
+    
+            if (response.status == 200) {
+                setUser(response.data)
 
-    try {
-        if (response.status != 200) {
-            onError("Erro ao buscar usuario: " + response.statusText)
+                return true
+    
+            } else {
+                onAlert(response.data.title, response.data.message)
+
+                return false
+            }
+    
+        } catch (error: any) {
+            if (error.response && error.response.data) {
+                onAlert(error.reponse.data.title, error.response.data.message)
+    
+            } else {
+                onAlert(error.title, error.message)
+            }
+    
+            return false
         }
-
-    } catch (error) {
-        onError("Erro ao tentar buscar usuario: " + error)
-    }
-
-    return response.data
 }

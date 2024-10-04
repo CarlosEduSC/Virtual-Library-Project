@@ -89,6 +89,12 @@ const Menu = () => {
 
                         Opções Livro
                     </li>
+
+                    <li className="option" onClick={() => navigate("/login")}>
+                        <img className='option-img' alt='Sair' src='/images/log-out.png' />
+
+                        Sair
+                    </li>
                 </ul>
             }
 
@@ -135,6 +141,16 @@ const Menu = () => {
 
                     Lista de livros
                 </li>
+
+                {type == "READER" &&
+
+                    <li className="option" onClick={() => navigate("/login")}>
+                        <img className='option-img' alt='Sair' src='/images/log-out.png' />
+
+                        Sair
+                    </li>
+
+                }
             </ul>
         </div>
     )

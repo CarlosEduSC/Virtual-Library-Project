@@ -1,35 +1,88 @@
 import { useEffect, useState } from 'react'
-import './index.css'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { IUser } from '../../shared/interfaces/IUser'
+import BaseForm from '../../components/BaseForm'
+import FormTitle from '../../components/FormTitle'
+import FormTextField from '../../components/FormTextField'
+import Select from '../../components/Select'
+import Button from '../../components/Button'
+import Alert from '../../components/Alert'
+import { findUserById } from '../../shared/methods/user/FindUserById'
+import LoadingPage from '../LoadingPage'
 
 const UpdateUser = () => {
-  const location = useLocation()
   const navigate = useNavigate()
+  const location = useLocation()
 
-  if (location.pathname == "/login") {
-    localStorage.setItem('token', "")
-  }
-  
+  const {userId} = useParams()
+
   const [user, setUser] = useState<IUser>()
-  const [id, setId] = useState("")
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [passwordCheck, setPasswordCheck] = useState("")
   const [type, setType] = useState("")
-  const [active, setActive] = useState(true)
 
-  const [isLoading, setIsLoading] = useState(false)
+  const types = ["Leitor", "Administrador"]
+
+  const [isLoading, setIsLoading] = useState(true)
   const [submit, setSubmit] = useState(false)
 
   const [isAlertOpen, setIsAlertOpen] = useState(false)
-  const [alertTittle, setAlertTittle] = useState("");
+  const [alertTitle, setAlertTitle] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
+
+  const handleTypeSelected = (typeSelected: string) => {
+    if (typeSelected == "Leitor") {
+      setType("READER")
+
+    } else if (typeSelected == "Administrador") {
+      setType("ADMIN")
+    }
+  }
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const success = await findUserById(
+        userId ?? "",
+        setUser,
+      (errorTitle, errorMessage) => {
+        setAlertTitle(errorTitle)
+        setAlertMessage(errorMessage)
+      })
+
+      if (success) {
+        setName(user?.name ?? "")
+        setEmail(user?.email ?? "")
+        setType(user?.type ?? "")
+
+        setIsLoading(false)
+      
+      } else {
+
+      }
+    }
+
+    if (userId) {
+      fetchUser()
+    }
+  })
+
+  useEffect(() => {
+    if (location.state && location.state.alertTitle && location.state.alertMessage) {
+      setAlertTitle(location.state.alertTitle);
+      setAlertMessage(location.state.alertMessage);
+      setIsAlertOpen(true)
+    }
+  }, [location.state]);
+
+  if (location.pathname == "/login") {
+    localStorage.setItem('token', "")
+  }
 
   useEffect(() => {
     if (location.state && location.state.alertTittle && location.state.alertMessage) {
-      setAlertTittle(location.state.alertTittle);
+      setAlertTitle(location.state.alertTittle);
       setAlertMessage(location.state.alertMessage);
       setIsAlertOpen(true)
     }
@@ -41,12 +94,12 @@ const UpdateUser = () => {
     setIsLoading(true)
 
     const userData: IUser = {
-      id,
+      id: userId ?? "",
       name,
       email,
       password,
       type,
-      active
+      active: user?.active ?? true
     }
 
     setUser(userData)
@@ -54,55 +107,51 @@ const UpdateUser = () => {
   }
 
   return (
-    <div className='user-form'>
-      <form style={{ width: location.pathname == "/logIn" ? "40%" : "" }} onSubmit={handleSubmit}>
-        
+    !isLoading ? <BaseForm onSubmit={handleSubmit}>
 
-        {location.pathname != "/logIn" &&
-          <TextField
-            label='Nome'
-            placeHolder='Digite o nome do usuario'
-            value={name}
-            onAlterado={value => setName(value)}
-          />
-        }
+      <FormTitle>Altere os dados do usuário conforme nescessario.</FormTitle>
 
-        <TextField
-          label='Email'
-          placeHolder='Digite o email do usuario'
-          value={email}
-          type='email'
-          onAlterado={value => setEmail(value)}
-        />
+      <FormTextField
+        label='Nome'
+        placeHolder='Digite o nome do usuario'
+        value={name}
+        onAlterado={value => setName(value)}
+        minLength={3}
+      />
 
-        <TextField
-          label='Senha'
-          placeHolder='Digite a senha do usuario'
-          value={password}
-          type='password'
-          onAlterado={value => setPassword(value)}
-        />
+      <FormTextField
+        label='Email'
+        placeHolder='Digite o email do usuario'
+        value={email}
+        type='email'
+        onAlterado={value => setEmail(value)}
+        minLength={5}
+      />
 
-        {location.pathname != "/logIn" &&
-          <TextField
-            label='Confirmar Senha'
-            placeHolder='Digite novamente a senha do usuario'
-            value={passwordCheck}
-            type='password'
-            onAlterado={value => setPasswordCheck(value)}
-          />
-        }
+      <FormTextField
+        label='Senha'
+        placeHolder='Digite a senha do usuario'
+        value={password}
+        type='password'
+        onAlterado={value => setPassword(value)}
+      />
 
-        <Button>{isLoading ?
-          <div className='loading'>
-            Carregando
-            <LoadingSpinner />
-          </div> : "Entrar"}
-        </Button>
+      <FormTextField
+        label='Confirmar Senha'
+        placeHolder='Digite novamente a senha do usuario'
+        value={passwordCheck}
+        type='password'
+        onAlterado={value => setPasswordCheck(value)}
+      />
 
-        {isAlertOpen && <Alert tittle={alertTittle} message={alertMessage} onClose={() => setIsAlertOpen(false)} />}
-      </form>
-    </div>
+      <Select label='Tipo' placeholder={type} options={types} onOptionSelected={handleTypeSelected} />
+
+      <Button isLoading={isLoading}>Cadastrar</Button>
+
+      {isAlertOpen && <Alert title={alertTitle} message={alertMessage} onClose={() => setIsAlertOpen(false)} />}
+    </BaseForm> :
+
+    <LoadingPage/>
   )
 }
 

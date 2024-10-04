@@ -10,6 +10,9 @@ import Select from '../../components/Select'
 import { findAllActiveUsers } from '../../shared/methods/user/FindAllActiveUsers'
 import { findAllAdmins } from '../../shared/methods/user/FindAllAdmins'
 import { findAllReaders } from '../../shared/methods/user/FindAllReaders'
+import { deleteUser } from '../../shared/methods/user/DeleteUser'
+import { reactivateUser } from '../../shared/methods/user/ReactivateUser'
+import { jwtDecode } from 'jwt-decode'
 
 
 const UserList = () => {
@@ -18,6 +21,10 @@ const UserList = () => {
   const [isLoading, setIsLoading] = useState(true)
 
   const [users, setUsers] = useState<IUser[]>([])
+
+  const [selectedUserId, setSelectedUserId] = useState("")
+
+  const [actionType, setActionType] = useState<"delete" | "reactivate" | "">("")
 
   const filters = [
     "Todos os usuários",
@@ -37,6 +44,66 @@ const UserList = () => {
     setFilter(filterSelected)
   }
 
+  const handleButtonClick = (userId: string, active: boolean) => {
+    setSelectedUserId(userId)
+
+    if (active) {
+      setActionType("delete")
+
+    } else {
+      setActionType("reactivate")
+    }
+  }
+
+  const fetchUsers = async (selectedFilter: string) => {
+    var success = false
+
+    if (selectedFilter == filters[0]) {
+      success = await findAllUsers(
+        setUsers,
+        (errorTitle, errorMessage) => {
+          setAlertTitle(errorTitle)
+          setAlertMessage(errorMessage)
+        }
+      )
+
+    } else if (selectedFilter == filters[1]) {
+      success = await findAllActiveUsers(
+        setUsers,
+        (errorTitle, errorMessage) => {
+          setAlertTitle(errorTitle)
+          setAlertMessage(errorMessage)
+        }
+      )
+
+    } else if (selectedFilter == filters[2]) {
+      success = await findAllAdmins(
+        setUsers,
+        (errorTitle, errorMessage) => {
+          setAlertTitle(errorTitle)
+          setAlertMessage(errorMessage)
+        }
+      )
+
+    } else if (selectedFilter == filters[3]) {
+      success = await findAllReaders(
+        setUsers,
+        (errorTitle, errorMessage) => {
+          setAlertTitle(errorTitle)
+          setAlertMessage(errorMessage)
+        }
+      )
+    }
+
+    if (!success) {
+      setIsLoading(false)
+      setIsAlertOpen(true)
+
+    } else {
+      setIsLoading(false)
+    }
+  }
+
   useEffect(() => {
     if (location.state && location.state.alertTitle && location.state.alertMessage) {
       setAlertTitle(location.state.alertTitle);
@@ -46,58 +113,60 @@ const UserList = () => {
   }, [location.state]);
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      var success = false
+    fetchUsers(filter)
+  }, [filter])
 
-      if (filter == filters[0]) {
-        success = await findAllUsers(
-          setUsers,
-          (errorTitle, errorMessage) => {
-            setAlertTitle(errorTitle)
-            setAlertMessage(errorMessage)
-          }
-        )
+  useEffect(() => {
+    const fetchDelete = async () => {
+      const success = await deleteUser(
+        selectedUserId,
+        (alertTitle, alertMessage) => {
+          setAlertTitle(alertTitle)
+          setAlertMessage(alertMessage)
+        }
+      )
 
-      } else if (filter == filters[1]) {
-        success = await findAllActiveUsers(
-          setUsers,
-          (errorTitle, errorMessage) => {
-            setAlertTitle(errorTitle)
-            setAlertMessage(errorMessage)
-          }
-        )
+      if (success) {
+        setIsLoading(true)
 
-      } else if (filter == filters[2]) {
-        success = await findAllAdmins(
-          setUsers,
-          (errorTitle, errorMessage) => {
-            setAlertTitle(errorTitle)
-            setAlertMessage(errorMessage)
-          }
-        )
-
-      } else if (filter == filters[3]) {
-        success = await findAllReaders(
-          setUsers,
-          (errorTitle, errorMessage) => {
-            setAlertTitle(errorTitle)
-            setAlertMessage(errorMessage)
-          }
-        )
+        fetchUsers(filter)
       }
 
-      if (!success) {
-        setIsLoading(false)
-        setIsAlertOpen(true)
+      setIsAlertOpen(true)
 
-      } else {
-        setIsLoading(false)
-      }
+      setActionType("")
     }
 
-    fetchUsers()
+    if (actionType == "delete") {
+      fetchDelete()
+    }
+  }, [actionType])
 
-  }, [filter])
+  useEffect(() => {
+    const fetchReactivate = async () => {
+      const success = await reactivateUser(
+        selectedUserId,
+        (alertTitle, alertMessage) => {
+          setAlertTitle(alertTitle)
+          setAlertMessage(alertMessage)
+        }
+      )
+
+      if (success) {
+        setIsLoading(true)
+
+        fetchUsers(filter)
+      }
+
+      setIsAlertOpen(true)
+
+      setActionType("")
+    }
+
+    if (actionType == "reactivate") {
+      fetchReactivate()
+    }
+  }, [actionType])
 
   return (
     !isLoading ?
@@ -107,15 +176,35 @@ const UserList = () => {
           <Select placeholder={filter} options={filters} onOptionSelected={handleFilterSelected} />
         </div>
 
-        <h1 className='title'>Usuarios</h1>
+        {users.length > 1 ?
+          <>
+            <h1 className='title'>Usuarios</h1>
 
-        <div className='users'>
-          {users.map((user) => (
-            <UserCard user={user} />
-          ))}
+            <div className='users'>
+              {users.map((user) => (
+                user.id != (jwtDecode(localStorage.getItem('token') ?? "") as { id: string }).id ?
 
-          {isAlertOpen && <Alert title={alertTitle} message={alertMessage} onClose={() => setIsAlertOpen(false)} />}
-        </div>
+                  <UserCard user={user} onAction={() => handleButtonClick(user.id, user.active)} />
+
+                  : <></>
+              ))}
+            </div>
+          </>
+
+          :
+
+          <h1 className='title'>
+            Sem usuarios
+
+            {
+              filter == filters[0] ? " cadastrados!" :
+                filter == filters[1] ? " com contas ativas!" :
+                  filter == filters[2] ? " do tipo administrador!" :
+                    filter == filters[3] ? " do tipo leitor!" : ""}
+          </h1>
+        }
+
+        {isAlertOpen && <Alert title={alertTitle} message={alertMessage} onClose={() => setIsAlertOpen(false)} />}
       </div>
 
       :
