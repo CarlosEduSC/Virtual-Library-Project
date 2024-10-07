@@ -11,7 +11,7 @@
 }
 
 .user-card:hover {
-    .active, .edit{
+    .bottom, .edit{
         visibility: visible;
     }
 }
@@ -23,16 +23,14 @@
     margin: 0 auto;
 }
 
-.user-card .active {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
+.user-card .bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 3px;
     visibility: hidden;
     height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 100%;
 }
 
 .user-card .edit {
@@ -48,4 +46,15 @@
 
 .user-card .edit:hover {
     background-color: #356E73;
+}
+
+.user-card .delete {
+    padding: 3px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.user-card .delete:hover {
+    background-color: #ff3636;
 }

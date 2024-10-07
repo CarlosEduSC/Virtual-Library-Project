@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { IUser } from '../../shared/interfaces/IUser'
-import FormTextField from '../../components/FormTextField'
+import FormTextField from '../../components/Input'
 import Button from '../../components/Button'
 import Alert from '../../components/Alert'
 import { login } from '../../shared/methods/user/Login'

@@ -10,9 +10,11 @@ import Select from '../../components/Select'
 import { findAllActiveUsers } from '../../shared/methods/user/FindAllActiveUsers'
 import { findAllAdmins } from '../../shared/methods/user/FindAllAdmins'
 import { findAllReaders } from '../../shared/methods/user/FindAllReaders'
-import { deleteUser } from '../../shared/methods/user/DeleteUser'
+import { deactivateUser } from '../../shared/methods/user/DeactivateUser'
 import { reactivateUser } from '../../shared/methods/user/ReactivateUser'
 import { jwtDecode } from 'jwt-decode'
+import { findAllInactiveUsers } from '../../shared/methods/user/FindAllInactiveUsers'
+import Input from '../../components/Input'
 
 
 const UserList = () => {
@@ -22,6 +24,8 @@ const UserList = () => {
 
   const [users, setUsers] = useState<IUser[]>([])
 
+  const [search, setSearch] = useState("")
+
   const [selectedUserId, setSelectedUserId] = useState("")
 
   const [actionType, setActionType] = useState<"delete" | "reactivate" | "">("")
@@ -29,9 +33,12 @@ const UserList = () => {
   const filters = [
     "Todos os usuários",
     "Somente contas ativas",
+    "Somente contas desativadas",
     "Apenas administradores",
     "Apenas leitores"
   ]
+
+  const [filterChange, setFilterChange] = useState(false)
 
   const [filter, setFilter] = useState(filters[0])
 
@@ -41,6 +48,7 @@ const UserList = () => {
 
   const handleFilterSelected = (filterSelected: string) => {
     setIsLoading(true)
+    setFilterChange(true)
     setFilter(filterSelected)
   }
 
@@ -55,6 +63,15 @@ const UserList = () => {
     }
   }
 
+  const handleUserDelete = (alertTitle: string, alertMessage: string) => {
+    handleFilterSelected(filter)
+
+    setAlertTitle(alertTitle)
+    setAlertMessage(alertMessage)
+
+    setIsAlertOpen(true)
+  }
+
   const fetchUsers = async (selectedFilter: string) => {
     var success = false
 
@@ -62,8 +79,10 @@ const UserList = () => {
       success = await findAllUsers(
         setUsers,
         (errorTitle, errorMessage) => {
-          setAlertTitle(errorTitle)
-          setAlertMessage(errorMessage)
+          if (errorTitle != null && errorMessage != null) {
+            setAlertTitle(errorTitle)
+            setAlertMessage(errorMessage)
+          }
         }
       )
 
@@ -71,29 +90,48 @@ const UserList = () => {
       success = await findAllActiveUsers(
         setUsers,
         (errorTitle, errorMessage) => {
-          setAlertTitle(errorTitle)
-          setAlertMessage(errorMessage)
+          if (errorTitle != null && errorMessage != null) {
+            setAlertTitle(errorTitle)
+            setAlertMessage(errorMessage)
+          }
         }
       )
 
     } else if (selectedFilter == filters[2]) {
-      success = await findAllAdmins(
+      success = await findAllInactiveUsers(
         setUsers,
         (errorTitle, errorMessage) => {
-          setAlertTitle(errorTitle)
-          setAlertMessage(errorMessage)
+          if (errorTitle != null && errorMessage != null) {
+            setAlertTitle(errorTitle)
+            setAlertMessage(errorMessage)
+          }
         }
       )
 
     } else if (selectedFilter == filters[3]) {
+      success = await findAllAdmins(
+        setUsers,
+        (errorTitle, errorMessage) => {
+          if (errorTitle != null && errorMessage != null) {
+            setAlertTitle(errorTitle)
+            setAlertMessage(errorMessage)
+          }
+        }
+      )
+
+    } else if (selectedFilter == filters[4]) {
       success = await findAllReaders(
         setUsers,
         (errorTitle, errorMessage) => {
-          setAlertTitle(errorTitle)
-          setAlertMessage(errorMessage)
+          if (errorTitle != null && errorMessage != null) {
+            setAlertTitle(errorTitle)
+            setAlertMessage(errorMessage)
+          }
         }
       )
     }
+
+    setFilterChange(false)
 
     if (!success) {
       setIsLoading(false)
@@ -108,17 +146,18 @@ const UserList = () => {
     if (location.state && location.state.alertTitle && location.state.alertMessage) {
       setAlertTitle(location.state.alertTitle);
       setAlertMessage(location.state.alertMessage);
+      setFilter(location.state.filter)
       setIsAlertOpen(true)
     }
   }, [location.state]);
 
   useEffect(() => {
     fetchUsers(filter)
-  }, [filter])
+  }, [filterChange])
 
   useEffect(() => {
     const fetchDelete = async () => {
-      const success = await deleteUser(
+      const success = await deactivateUser(
         selectedUserId,
         (alertTitle, alertMessage) => {
           setAlertTitle(alertTitle)
@@ -172,6 +211,12 @@ const UserList = () => {
     !isLoading ?
       <div className="user-list">
 
+        <div className='name-search'>
+          <Input value={search} onAlterado={value => setSearch(value)} placeHolder='Procurar usuario pelo nome ou email' height={20}/>
+        </div>
+
+        <h4 className='warning'>*ao clicar para excluir um usuário, a conta será permanentemente removida e não poderá ser recuperada!</h4>
+
         <div className='filter'>
           <Select placeholder={filter} options={filters} onOptionSelected={handleFilterSelected} />
         </div>
@@ -184,7 +229,12 @@ const UserList = () => {
               {users.map((user) => (
                 user.id != (jwtDecode(localStorage.getItem('token') ?? "") as { id: string }).id ?
 
-                  <UserCard user={user} onAction={() => handleButtonClick(user.id, user.active)} />
+                  (user.name.toUpperCase().includes(search.toUpperCase()) || user.email.toUpperCase().includes(search.toUpperCase())) && <UserCard
+                    user={user}
+                    onAction={() => handleButtonClick(user.id, user.active)}
+                    onDelete={(alertTitle, alertMessage) => handleUserDelete(alertTitle, alertMessage)}
+                    page={[location.pathname, filter]}
+                  />
 
                   : <></>
               ))}
@@ -198,9 +248,10 @@ const UserList = () => {
 
             {
               filter == filters[0] ? " cadastrados!" :
-                filter == filters[1] ? " com contas ativas!" :
-                  filter == filters[2] ? " do tipo administrador!" :
-                    filter == filters[3] ? " do tipo leitor!" : ""}
+                filter == filters[1] ? " com conta ativa!" :
+                  filter == filters[2] ? " com conta inativa!" :
+                    filter == filters[3] ? " do tipo administrador!" :
+                      filter == filters[4] ? " do tipo leitor!" : ""}
           </h1>
         }
 

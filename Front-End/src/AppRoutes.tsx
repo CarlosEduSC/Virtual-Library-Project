@@ -6,6 +6,7 @@ import Login from "./pages/Login"
 import CreateUser from "./pages/CreateUser"
 import UpdateUser from "./pages/UpdateUser"
 import UserList from "./pages/UserList"
+import CreateBook from "./pages/CreateBook"
 
 const AppRoutes = () => {
     return (
@@ -19,6 +20,7 @@ const AppRoutes = () => {
                     <Route path="/createUser" element={<ProtectedRoute element={<CreateUser />} requiredUserType="ADMIN" />} />
                     <Route path="/updateUser/:userId" element={<ProtectedRoute element={<UpdateUser />} requiredUserType="ADMIN" />} />
                     <Route path="/listUsers" element={<ProtectedRoute element={<UserList />} requiredUserType="ADMIN" />} />
+                    <Route path="/createBook" element={<ProtectedRoute element={<CreateBook/>} requiredUserType="ADMIN"/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>

@@ -58,7 +58,7 @@ public class UserController {
 
             var uri = uriBuilder.path("/user/create/{id}").buildAndExpand(user.getId()).toUri();
 
-            return ResponseEntity.created(uri).body(new AlertData("Usuário Criado com Sucesso!",
+            return ResponseEntity.created(uri).body(new AlertData("Usuário criado com sucesso!",
                     "O novo usuário foi cadastrado com sucesso e agora pode acessar o sistema."));
 
         } catch (Exception e) {
@@ -84,10 +84,25 @@ public class UserController {
     @SuppressWarnings("rawtypes")
     @GetMapping("/find-all-active")
     public ResponseEntity findAllUsersActive() {
-        String errorTitle = errorTitleGenerate("buscar os usuarios com contas ativas");
+        String errorTitle = errorTitleGenerate("buscar os usuarios com a conta ativa");
 
         try {
-            var users = repository.findAllByActiveTrue();
+            var users = repository.findAllByActive(true);
+
+            return ResponseEntity.ok(mapUsers(users));
+
+        } catch (Exception e) {
+            return handleError(errorTitle, e);
+        }
+    }
+
+    @SuppressWarnings("rawtypes")
+    @GetMapping("/find-all-inactive")
+    public ResponseEntity findAllUsersInactive() {
+        String errorTitle = errorTitleGenerate("buscar os usuarios com a conta inativa");
+
+        try {
+            var users = repository.findAllByActive(false);
 
             return ResponseEntity.ok(mapUsers(users));
 
@@ -166,7 +181,8 @@ public class UserController {
 
             repository.save(user);
 
-            return ResponseEntity.ok(new ShowUserData(user));
+            return ResponseEntity.ok(new AlertData("Usuário atualizado com sucesso!",
+                    "Os dados do usuário foram atualizados com sucesso."));
 
         } catch (Exception e) {
             return handleError(errorTitle, e);
@@ -175,13 +191,36 @@ public class UserController {
 
     @SuppressWarnings("rawtypes")
     @DeleteMapping("/delete/{id}")
+    @Transactional
     public ResponseEntity deleteUser(@PathVariable String id) {
+        String errorTitle = errorTitleGenerate("deletar o usuario");
+
+        try {
+            if (!repository.existsById(id)) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new AlertData(errorTitle, "Usuario não encontrado."));
+
+            }
+
+            repository.deleteById(id);
+
+            return ResponseEntity.ok()
+                    .body(new AlertData("Usuario deletado!", "O usuario foi deletado com sucesso."));
+
+        } catch (Exception e) {
+            return handleError(errorTitle, e);
+        }
+    }
+
+    @SuppressWarnings("rawtypes")
+    @DeleteMapping("/deactivate-account/{id}")
+    public ResponseEntity deactivateUserAccount(@PathVariable String id) {
         return changeUserActive(id, false);
     }
 
     @SuppressWarnings("rawtypes")
-    @PutMapping("reactivate/{id}")
-    public ResponseEntity reactivateUser(@PathVariable String id) {
+    @PutMapping("/reactivate-account/{id}")
+    public ResponseEntity reactivateUserAccount(@PathVariable String id) {
         return changeUserActive(id, true);
     }
 
@@ -255,7 +294,7 @@ public class UserController {
     @SuppressWarnings("rawtypes")
     @Transactional
     public ResponseEntity changeUserActive(@PathVariable String id, boolean active) {
-        String errorTitle = errorTitleGenerate(active ? "reativar" : "desativar" + " a conta do usuario");
+        String errorTitle = errorTitleGenerate((active ? "reativar" : "desativar") + " a conta do usuario");
 
         try {
             Optional<User> optionalUser = repository.findById(id);
@@ -274,7 +313,7 @@ public class UserController {
                                 "A conta do usuario já está " + (active ? "ativa" : "desativada") + "."));
 
             } else {
-                user.setActive(false);
+                user.setActive(active);
 
                 repository.save(user);
 

@@ -7,6 +7,20 @@
     box-sizing: border-box;
 }
 
+.user-list .warning {
+    position: absolute;
+    left: 20px;
+    top: 60px;
+    color: #356E73;
+}
+
+.user-list .name-search {
+    position: absolute;
+    left: 20px;
+    top: 110px;
+    width: 450px;
+}
+
 .user-list .title{
     color: #356E73;
     width: 100%;
@@ -19,7 +33,7 @@
 .user-list .filter {
     position: absolute;
     right: 20px;
-    top: 60px;
+    top: 95px;
 }
 
 .user-list .users{

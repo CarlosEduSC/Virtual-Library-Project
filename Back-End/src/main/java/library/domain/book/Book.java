@@ -27,7 +27,7 @@ public class Book {
 	private int availableCopys;
 	private Boolean available;
 
-	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	public Book(CreateBookData data) {
 		this.title = data.title();

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends MongoRepository<User, String> {
 
-    List<User> findAllByActiveTrue();
+    List<User> findAllByActive(boolean active);
 
     User findByEmail(String userEmail);
 

@@ -1,22 +1,23 @@
 import './index.css'
 
-interface TextFieldProps {
+interface InputProps {
   onAlterado: (value: string) => void
-  label: string
+  label?: string
   value: string
   required?: boolean
   placeHolder?: string
   type?: "date" | "text" | "email" | "password" | "number" | "color"
   minLength?: number
+  height?: number
 }
 
-const FormTextField = ({ onAlterado, label, value, required = true, placeHolder = "", type = "text", minLength = 8}: TextFieldProps) => {
+const Input = ({ onAlterado, label, value, required = true, placeHolder = "", type = "text", minLength = 8, height = 80}: InputProps) => {
   const onDigitado = (event: React.ChangeEvent<HTMLInputElement>) => {
     onAlterado(event.target.value)
   }
 
   return (
-    <div className='form-text-field'>
+    <div className='input'>
       <label>{label}</label>
 
       <input
@@ -26,9 +27,10 @@ const FormTextField = ({ onAlterado, label, value, required = true, placeHolder 
         placeholder={placeHolder}
         type={type}
         minLength={minLength}
+        style={{height: height + "px"}}
       />
     </div>
   )
 }
 
-export default FormTextField
+export default Input

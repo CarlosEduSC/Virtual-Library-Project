@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { IUser } from '../../shared/interfaces/IUser'
-import FormTextField from '../../components/FormTextField'
+import FormTextField from '../../components/Input'
 import Alert from '../../components/Alert'
 import BaseForm from '../../components/BaseForm'
 import Button from '../../components/Button'
@@ -27,8 +27,8 @@ const CreateUser = () => {
   const [successState, setSuccessState] = useState(false)
 
   const [isAlertOpen, setIsAlertOpen] = useState(false)
-  const [alertTitle, setAlertTitle] = useState("");
-  const [alertMessage, setAlertMessage] = useState("");
+  const [alertTitle, setAlertTitle] = useState("")
+  const [alertMessage, setAlertMessage] = useState("")
 
   const handleTypeSelected = (typeSelected: string) => {
     if (typeSelected == "Leitor") {

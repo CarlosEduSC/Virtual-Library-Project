@@ -120,13 +120,13 @@ const Menu = () => {
             <ul className={type == "ADMIN" ? "items-livro" : "menu-options"} style={{ visibility: livroIsOpen ? "visible" : "hidden" }}>
 
                 {type != "READER" ?
-                    <>
-                        <li className='item'>
-                            <img className='option-img' alt='Cadastrar Livro' src='/images/add.png' />
 
-                            Cadastrar livro
-                        </li>
-                    </>
+                    (location.pathname != "/createBook" && <li className='item' onClick={() => navigate("/createBook")}>
+                        <img className='option-img' alt='Cadastrar Livro' src='/images/add.png' />
+
+                        Cadastrar livro
+                    </li>)
+
 
                     :
                     <li className="option">
@@ -136,11 +136,13 @@ const Menu = () => {
                     </li>
                 }
 
-                <li className={type == "ADMIN" ? "item" : "option"}>
-                    <img className='option-img' alt='Lista de livros' src='/images/list.png' />
+                {location.pathname != "/listBooks" &&
+                    <li className={type == "ADMIN" ? "item" : "option"}>
+                        <img className='option-img' alt='Lista de livros' src='/images/list.png' />
 
-                    Lista de livros
-                </li>
+                        Lista de livros
+                    </li>
+                }
 
                 {type == "READER" &&
 

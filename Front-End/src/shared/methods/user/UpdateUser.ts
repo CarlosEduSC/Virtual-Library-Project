@@ -3,20 +3,28 @@ import api from "../api";
 
 export const updateUser = async (
     user: IUser,
-    onSucess: (message: string) => void,
-    onError: (message: string) => void) => {
+    onAlert: (title: string, message: string) => void): Promise<boolean> => {
 
     try {
-        const response = await api.post<IUser>("/user/update", user)
+        const response = await api.put("/user/update", user)
+
+        onAlert(response.data.title, response.data.message)
 
         if (response.status == 200) {
-            onSucess("Usuario atualizado com sucesso!")
+            return true
 
         } else {
-            onError("Erro ao atualizar o usuario: " + response.statusText)
+            return false
         }
 
-    } catch (error) {
-        onError("Erro ao tentar atualizar o usuario: " + error)
+    } catch (error: any) {
+        if (error.response && error.response.data) {
+            onAlert(error.reponse.data.title, error.response.data.message)
+
+        } else {
+            onAlert(error.title, error.message)
+        }
+
+        return false
     }
 }
