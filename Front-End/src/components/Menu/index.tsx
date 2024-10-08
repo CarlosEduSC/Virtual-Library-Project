@@ -101,7 +101,7 @@ const Menu = () => {
             <ul className="items-usuario" style={{ visibility: usuarioIsOpen ? "visible" : "hidden" }}>
 
                 {location.pathname != "/createUser" &&
-                    <li className="item" onClick={() => navigate("/createUser")}>
+                    <li className="item" onClick={() => navigate("/createUser", { state: { from: location.pathname } })}>
                         <img className='option-img' alt='Cadastrar Usuario' src='/images/add-user.png' />
 
                         Cadastrar usuario
@@ -121,11 +121,13 @@ const Menu = () => {
 
                 {type != "READER" ?
 
-                    (location.pathname != "/createBook" && <li className='item' onClick={() => navigate("/createBook")}>
-                        <img className='option-img' alt='Cadastrar Livro' src='/images/add.png' />
+                    (location.pathname != "/createBook" &&
+                        <li className='item' onClick={() => navigate("/createBook", { state: { from: location.pathname } })}>
+                            <img className='option-img' alt='Cadastrar Livro' src='/images/add.png' />
 
-                        Cadastrar livro
-                    </li>)
+                            Cadastrar livro
+                        </li>
+                    )
 
 
                     :
@@ -137,7 +139,7 @@ const Menu = () => {
                 }
 
                 {location.pathname != "/listBooks" &&
-                    <li className={type == "ADMIN" ? "item" : "option"}>
+                    <li className={type == "ADMIN" ? "item" : "option"} onClick={() => navigate("/listBooks")}>
                         <img className='option-img' alt='Lista de livros' src='/images/list.png' />
 
                         Lista de livros

@@ -3,13 +3,13 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { IUser } from '../../shared/interfaces/IUser'
 import BaseForm from '../../components/BaseForm'
 import FormTitle from '../../components/FormTitle'
-import FormTextField from '../../components/Input'
 import Select from '../../components/Select'
 import Button from '../../components/Button'
 import Alert from '../../components/Alert'
 import { findUserById } from '../../shared/methods/user/FindUserById'
 import LoadingPage from '../LoadingPage'
 import { updateUser } from '../../shared/methods/user/UpdateUser'
+import Input from '../../components/Input'
 
 const UpdateUser = () => {
   const navigate = useNavigate()
@@ -131,7 +131,7 @@ const UpdateUser = () => {
 
       <FormTitle>Altere os dados do usuário conforme nescessario.</FormTitle>
 
-      <FormTextField
+      <Input
         label='Nome'
         placeHolder='Digite o nome do usuario'
         value={name}
@@ -139,7 +139,7 @@ const UpdateUser = () => {
         minLength={3}
       />
 
-      <FormTextField
+      <Input
         label='Email'
         placeHolder='Digite o email do usuario'
         value={email}
@@ -150,7 +150,7 @@ const UpdateUser = () => {
 
       <Select label='Tipo' placeholder={type == "ADMIN" ? types[1] : types[0]} options={types} onOptionSelected={handleTypeSelected} />
 
-      <Button isLoading={submitLoading}>Cadastrar</Button>
+      <Button isLoading={submitLoading}>Atualizar</Button>
 
       {isAlertOpen && <Alert title={alertTitle} message={alertMessage} onClose={() => setIsAlertOpen(false)} />}
     </BaseForm> :

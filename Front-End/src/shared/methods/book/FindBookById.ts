@@ -1,0 +1,33 @@
+import { IBook } from "../../interfaces/IBook";
+import api from "../api";
+
+export const findBookById = async (
+    id: string,
+    setBook: (book: IBook) => void,
+    onAlert: (title: string, message: string) => void): Promise<boolean> => {
+
+        try {
+            const response = await api.get("/book/find/" + id)
+    
+            if (response.status == 200) {
+                setBook(response.data)
+
+                return true
+    
+            } else {
+                onAlert(response.data.title, response.data.message)
+
+                return false
+            }
+    
+        } catch (error: any) {
+            if (error.response && error.response.data) {
+                onAlert(error.reponse.data.title, error.response.data.message)
+    
+            } else {
+                onAlert(error.title, error.message)
+            }
+    
+            return false
+        }
+}

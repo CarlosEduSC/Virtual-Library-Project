@@ -26,14 +26,6 @@ const Login = () => {
   const [alertMessage, setAlertMessage] = useState("")
 
   useEffect(() => {
-    if (location.state && location.state.alertTitle && location.state.alertMessage) {
-      setAlertTitle(location.state.alertTitle)
-      setAlertMessage(location.state.alertMessage)
-      setIsAlertOpen(true)
-    }
-  }, [location.state]);
-
-  useEffect(() => {
     if (user) {
       const fetchLogin = async () => {
 

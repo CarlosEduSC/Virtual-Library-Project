@@ -45,7 +45,7 @@ public class BookController {
                 LocalDate.parse(data.publishingDate(), Book.FORMATTER), data.author())) {
 
             return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body(new AlertData(errorTitle, "Um livro com o mesmo titulo"));
+                    .body(new AlertData(errorTitle, "Um livro com o mesmo titulo, autor e data de publicação já está cadastrado."));
         }
 
         try {

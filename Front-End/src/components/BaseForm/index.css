@@ -6,7 +6,6 @@
 .base-form  form{
     display: flex;
     flex-direction: column;
-    align-items: center;
     background-color: #7EBDC2;
     border-radius: 20px;
     padding: 36px 64px;

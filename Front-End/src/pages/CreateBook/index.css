@@ -1,0 +1,33 @@
+.bottom-line {
+    display: flex;
+    justify-content: space-around;
+}
+
+.cover {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.cover-img {
+    height: 400px;
+    width: 300px;
+    margin: auto;
+    padding: 0%;
+    background-color: #356E73;
+}
+
+.image-select {
+    position: absolute;
+    top: 10%;
+    left: 28%;
+    height: 40px;
+    width: 40px;
+    padding: 3px;
+    border-radius: 50%;
+    background-color: #B3D9DD;
+}
+
+.image-select:hover {
+    background-color: #356E73;
+}

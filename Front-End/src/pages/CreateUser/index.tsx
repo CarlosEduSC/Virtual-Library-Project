@@ -77,7 +77,7 @@ const CreateUser = () => {
         alertMessage
       };
 
-      navigate("/listUsers", { state: stateData, replace: true });
+      navigate(location.state.from, { state: stateData, replace: true });
     }
   }, [successState, alertTitle, alertMessage, navigate, location]);
 

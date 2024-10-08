@@ -143,11 +143,8 @@ const UserList = () => {
   }
 
   useEffect(() => {
-    if (location.state && location.state.alertTitle && location.state.alertMessage) {
-      setAlertTitle(location.state.alertTitle);
-      setAlertMessage(location.state.alertMessage);
+    if (location.state && location.state.filter) {
       setFilter(location.state.filter)
-      setIsAlertOpen(true)
     }
   }, [location.state]);
 

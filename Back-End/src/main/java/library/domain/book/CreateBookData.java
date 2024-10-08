@@ -22,5 +22,5 @@ public record CreateBookData(
     @NotNull(message = "A quantidade de copias disponiveis não pode ser nula ou estar em branco!")
     @Positive(message = "A quantidade de copias disponiveis não pode ser negativa!")
     @Min(value = 1, message = "A quantidade de copias diponiveis não pode ser zero!")
-    int copys
+    int copysTotal
 ) {}
