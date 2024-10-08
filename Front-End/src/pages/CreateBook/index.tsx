@@ -20,7 +20,7 @@ const CreateBook = () => {
   const [cover, setCover] = useState("")
   const [copysTotal, setcCopyTotal] = useState(0)
 
-  const [coverURl, setCoverURL] = useState("./images/base-image.png")
+  const [coverURl, setCoverURL] = useState("./images/base-image.jpg")
 
   const [isLoading, setIsLoading] = useState(false)
   const [submit, setSubmit] = useState(false)

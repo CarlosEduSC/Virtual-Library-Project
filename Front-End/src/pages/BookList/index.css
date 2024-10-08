@@ -1,0 +1,43 @@
+.book-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 70vh;
+    box-sizing: border-box;
+}
+
+.book-list .warning {
+    position: absolute;
+    left: 20px;
+    top: 60px;
+    color: #356E73;
+}
+
+.book-list .search {
+    position: absolute;
+    left: 20px;
+    top: 110px;
+    width: 450px;
+}
+
+.book-list .title{
+    color: #356E73;
+    width: 100%;
+    text-align: center;
+    font-size: 50px;
+    margin: 0%;
+    margin: 40px;
+}
+
+.book-list .filter {
+    position: absolute;
+    right: 20px;
+    top: 95px;
+}
+
+.book-list .books{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}

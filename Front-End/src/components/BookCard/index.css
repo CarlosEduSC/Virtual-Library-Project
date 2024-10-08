@@ -1,0 +1,67 @@
+.book-card {
+    background-color: #7EBDC2;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 15px;
+    min-width: 300px;
+    min-height: 170px;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+}
+
+.book-card:hover {
+    .bottom, .edit{
+        visibility: visible;
+    }
+}
+
+.book-card h1 {
+    color: #356E73;
+    cursor: pointer;
+    width: max-content;
+    margin: 0 auto;
+    padding: 0px 40px;
+}
+
+.book-card .cover {
+    height: 500px;
+    max-width: 306px;
+    margin: auto;
+    padding-bottom: 10px;
+}
+
+.book-card .bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    visibility: hidden;
+    height: 30px;
+    width: 100%;
+}
+
+.book-card .edit {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    padding: 3px;
+    height: 30px;
+    visibility: hidden;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.book-card .edit:hover {
+    background-color: #356E73;
+}
+
+.book-card .delete {
+    padding: 3px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.book-card .delete:hover {
+    background-color: #ff3636;
+}

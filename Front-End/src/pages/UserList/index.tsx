@@ -209,7 +209,7 @@ const UserList = () => {
       <div className="user-list">
 
         <div className='name-search'>
-          <Input value={search} onAlterado={value => setSearch(value)} placeHolder='Procurar usuario pelo nome ou email' height={20}/>
+          <Input value={search} onAlterado={value => setSearch(value)} placeHolder='Procurar usuario pelo nome ou email' height={20} />
         </div>
 
         <h4 className='warning'>*ao clicar para excluir um usuário, a conta será permanentemente removida e não poderá ser recuperada!</h4>
@@ -226,7 +226,8 @@ const UserList = () => {
               {users.map((user) => (
                 user.id != (jwtDecode(localStorage.getItem('token') ?? "") as { id: string }).id ?
 
-                  (user.name.toUpperCase().includes(search.toUpperCase()) || user.email.toUpperCase().includes(search.toUpperCase())) && <UserCard
+                  (user.name.toUpperCase().includes(search.toUpperCase()) || user.email.toUpperCase().includes(search.toUpperCase())) &&
+                  <UserCard
                     user={user}
                     onAction={() => handleButtonClick(user.id, user.active)}
                     onDelete={(alertTitle, alertMessage) => handleUserDelete(alertTitle, alertMessage)}

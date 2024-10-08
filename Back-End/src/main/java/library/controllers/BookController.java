@@ -252,7 +252,7 @@ public class BookController {
 
                     return ResponseEntity.ok()
                             .body(new AlertData("Livro " + (available ? "disponivel" : "indisponivel") + "!",
-                                    "O livro foi" + (available ? "disponibilizado" : "indisponibilizado")
+                                    "O livro foi " + (available ? "disponibilizado" : "indisponibilizado")
                                             + " com sucesso e agora ele " + (available ? "já" : "não")
                                             + " pode " + (available ? "voltar a ser" : "mais ser")
                                             + " acessado no sistema."));
