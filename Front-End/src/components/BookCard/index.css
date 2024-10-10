@@ -3,7 +3,7 @@
     padding: 10px;
     border-radius: 10px;
     margin: 15px;
-    min-width: 300px;
+    min-width: 450px;
     min-height: 170px;
     position: relative;
     flex-direction: column;
@@ -24,20 +24,18 @@
     padding: 0px 40px;
 }
 
-.book-card .cover {
-    height: 500px;
-    max-width: 306px;
-    margin: auto;
-    padding-bottom: 10px;
+.book-card .cover-div {
+    display: flex;
 }
 
 .book-card .bottom {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    visibility: hidden;
+    position: absolute;
+    bottom: 10px;
+    right: 5px;
     height: 30px;
-    width: 100%;
+    /* visibility: hidden; */
 }
 
 .book-card .edit {
@@ -56,6 +54,9 @@
 }
 
 .book-card .delete {
+    position: absolute;
+    left: 5px;
+    bottom: 5px;
     padding: 3px;
     height: 35px;
     border-radius: 50%;

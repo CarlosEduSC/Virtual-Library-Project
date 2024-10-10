@@ -8,6 +8,7 @@ import UpdateUser from "./pages/UpdateUser"
 import UserList from "./pages/UserList"
 import CreateBook from "./pages/CreateBook"
 import BookList from "./pages/BookList"
+import UpdateBook from "./pages/UpdateBook"
 
 const AppRoutes = () => {
     return (
@@ -23,6 +24,7 @@ const AppRoutes = () => {
                     <Route path="/listUsers" element={<ProtectedRoute element={<UserList />} requiredUserType="ADMIN" />} />
 
                     <Route path="/createBook" element={<ProtectedRoute element={<CreateBook />} requiredUserType="ADMIN" />} />
+                    <Route path="/updateBook/:bookId" element={<ProtectedRoute element={<UpdateBook />} requiredUserType="ADMIN" />} />
                     <Route path="/listBooks" element={<ProtectedRoute element={<BookList />} requiredUserType="ADMIN" />} />
                 </Route>
             </Routes>

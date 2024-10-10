@@ -190,7 +190,7 @@ const BookList = () => {
         <Select placeholder={filter} options={filters} onOptionSelected={handleFilterSelected} />
       </div>
 
-      {books.length > 1 ?
+      {books.length >= 1 ?
         <>
           <h1 className='title'>Livros</h1>
 

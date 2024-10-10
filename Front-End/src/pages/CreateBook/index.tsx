@@ -8,6 +8,7 @@ import Button from "../../components/Button"
 import './index.css'
 import { createBook } from "../../shared/methods/book/CreateBook"
 import { useLocation, useNavigate } from "react-router-dom"
+import CoverSelect from "../../components/CoverSelect"
 
 const CreateBook = () => {
   const navigate = useNavigate()
@@ -20,8 +21,6 @@ const CreateBook = () => {
   const [cover, setCover] = useState("")
   const [copysTotal, setcCopyTotal] = useState(0)
 
-  const [coverURl, setCoverURL] = useState("./images/base-image.jpg")
-
   const [isLoading, setIsLoading] = useState(false)
   const [submit, setSubmit] = useState(false)
   const [successState, setSuccessState] = useState(false)
@@ -29,24 +28,6 @@ const CreateBook = () => {
   const [isAlertOpen, setIsAlertOpen] = useState(false)
   const [alertTitle, setAlertTitle] = useState("")
   const [alertMessage, setAlertMessage] = useState("")
-
-  const convertToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (error) => reject(error);
-    });
-  }
-
-  const handleCoverChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (file) {
-      const base64 = await convertToBase64(file);
-      setCover(base64)
-      setCoverURL(URL.createObjectURL(file))
-    }
-  }
 
   useEffect(() => {
     const fetchSubmit = async () => {
@@ -124,14 +105,7 @@ const CreateBook = () => {
         <Input value={copysTotal.toString()} label="Numero de copias" type="number" width={20} onAlterado={value => setcCopyTotal(Number.parseInt(value))} />
       </div>
 
-      <div className="cover">
-        <h3 style={{ margin: "10px auto" }}>Selecionar capa do livro</h3>
-        <img className="cover-img" src={coverURl} />
-
-        <img className="image-select" alt="Selecionar capa do livro" src="./images/add-image.png" onClick={() => document.getElementById('image-input')?.click()} />
-
-        <input id="image-input" type="file" onChange={handleCoverChange} style={{ display: "none" }} required={false} />
-      </div>
+      <CoverSelect onCoverChange={image => setCover(image)}/>
 
       <Button isLoading={isLoading}>Cadastrar</Button>
 

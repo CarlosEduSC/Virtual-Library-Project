@@ -1,0 +1,36 @@
+.cover-select {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    align-items: center;
+    height: 550px;
+}
+
+.cover-select .image-select {
+    position: absolute;
+    top: 10%;
+    left: 28%;
+    height: 40px;
+    width: 40px;
+    padding: 3px;
+    border-radius: 50%;
+    background-color: #B3D9DD;
+    cursor: pointer;
+}
+
+.cover-select .image-select:hover {
+    background-color: #356E73;
+}
+
+.cover-select .remove-img {
+    position: absolute;
+    top: 8.3%;
+    right: 30%;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.cover-select .remove-img:hover {
+    background-color: #ff3636;
+}

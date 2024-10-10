@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { deleteBook } from '../../shared/methods/book/DeleteBook'
 import TextField from '../TextField'
 import Button from '../Button'
+import CoverImage from '../CoverImage'
 
 interface BookCardProps {
   book: IBook
@@ -52,16 +53,19 @@ const BookCard = ({ book, onAction, onDelete, page = [] }: BookCardProps) => {
       <TextField label='Copias Indisponiveis'>{(book.copysTotal - book.availableCopys).toString()}</TextField>
       <TextField label='Disponibilidade'>{book.available ? "Disponivel" : "Indisponivel"}</TextField>
 
-      <img className='cover'alt='Capa do livro.' src={book.cover}/>
+      <img
+        className='delete'
+        alt='Deletar livro.'
+        src='/images/delete.png'
+        onClick={() => setOnBookDelete(true)}
+      />
+
+      <div className='cover-div'>
+        <CoverImage image={book.cover} />
+      </div>
+
 
       <div className='bottom'>
-        <img
-          className='delete'
-          alt='Deletar livro.'
-          src='/images/delete.png'
-          onClick={() => setOnBookDelete(true)}
-        />
-
         <Button
           isLoading={false}
           height={30}
