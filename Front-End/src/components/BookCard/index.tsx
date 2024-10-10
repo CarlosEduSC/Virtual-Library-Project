@@ -17,6 +17,8 @@ interface BookCardProps {
 const BookCard = ({ book, onAction, onDelete, page = [] }: BookCardProps) => {
   const navigate = useNavigate()
 
+  console.log(book.borrowedCopys)
+
   const [onBookDelete, setOnBookDelete] = useState(false)
 
   useEffect(() => {
@@ -50,7 +52,7 @@ const BookCard = ({ book, onAction, onDelete, page = [] }: BookCardProps) => {
       <TextField label='Data de Publicação'>{book.publishingDate.split("-").reverse().join("/")}</TextField>
       <TextField label='Total de copias'>{book.copysTotal.toString()}</TextField>
       <TextField label='Copias Disponiveis'>{book.availableCopys.toString()}</TextField>
-      <TextField label='Copias Indisponiveis'>{(book.copysTotal - book.availableCopys).toString()}</TextField>
+      <TextField label='Copias Emprestadas'>{book.borrowedCopys.toString()}</TextField>
       <TextField label='Disponibilidade'>{book.available ? "Disponivel" : "Indisponivel"}</TextField>
 
       <img

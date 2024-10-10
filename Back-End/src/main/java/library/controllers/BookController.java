@@ -167,7 +167,7 @@ public class BookController {
     public ResponseEntity deleteBook(@PathVariable String id) {
         String errorTitle = errorTitleGenerate("deletar livro");
 
-        if (repository.existsById(id)) {
+        if (!repository.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new AlertData(errorTitle, "Livro não encontrado."));
         }
 

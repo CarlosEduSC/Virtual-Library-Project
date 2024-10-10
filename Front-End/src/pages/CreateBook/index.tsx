@@ -84,6 +84,7 @@ const CreateBook = () => {
       cover,
       copysTotal,
       availableCopys: copysTotal,
+      borrowedCopys: 0,
       available: true
     }
 

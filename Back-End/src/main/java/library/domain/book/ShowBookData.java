@@ -10,6 +10,7 @@ public record ShowBookData(
         String cover,
         int copysTotal,
         int availableCopys,
+        int borrowedCopys,
         boolean available
     ) {
 
@@ -22,6 +23,7 @@ public record ShowBookData(
             book.getCover(),
             book.getCopysTotal(),
             book.getAvailableCopys(),
+            book.getBorrowedCopys(),
             book.getAvailable()
         );
     }

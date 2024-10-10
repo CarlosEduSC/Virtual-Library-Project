@@ -18,7 +18,7 @@ public record UpdateBookData(
     String cover,
     
     @Positive(message = "A quantidade de copias disponiveis não pode ser negativa!")
-    int copys,
+    int copysTotal,
 
-    Boolean active
+    int availableCopys
 ) {}

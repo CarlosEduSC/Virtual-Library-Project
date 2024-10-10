@@ -6,5 +6,6 @@ export interface IBook {
     cover: string
     copysTotal: number
     availableCopys: number
+    borrowedCopys: number
     available: boolean
 }
